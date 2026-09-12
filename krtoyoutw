@@ -1,0 +1,2121 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#ff7fa3">
+
+<title>KRTOYOU 報價單產生器</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family:
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            "Noto Sans TC",
+            "Microsoft JhengHei",
+            sans-serif;
+        background: #fff6f8;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+        font: inherit;
+    }
+
+    button {
+        cursor: pointer;
+    }
+
+    .container {
+        width: min(1100px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 30px 0 60px;
+    }
+
+    /* =========================
+       Header
+    ========================= */
+
+    .header {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .logo {
+        font-size: 34px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: #ff6f98;
+    }
+
+    .subtitle {
+        color: #777;
+        font-size: 14px;
+        margin-top: 4px;
+    }
+
+    /* =========================
+       Card
+    ========================= */
+
+    .card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 24px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 20px rgba(255, 111, 152, 0.08);
+        border: 1px solid #ffe1e9;
+    }
+
+    .card-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 18px;
+        font-size: 19px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    /* =========================
+       Form
+    ========================= */
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .form-group.full {
+        grid-column: 1 / -1;
+    }
+
+    label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+    }
+
+    input,
+    textarea,
+    select {
+        width: 100%;
+        min-height: 44px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 10px 12px;
+        background: #fff;
+        color: #333;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    textarea {
+        min-height: 90px;
+        resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        border-color: #ff8bab;
+        box-shadow: 0 0 0 3px rgba(255, 127, 163, 0.12);
+    }
+
+    /* =========================
+       Payment
+    ========================= */
+
+    .payment-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .payment-option {
+        position: relative;
+    }
+
+    .payment-option input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .payment-label {
+        display: block;
+        border: 2px solid #eee;
+        border-radius: 12px;
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.2s;
+        background: #fff;
+    }
+
+    .payment-option input:checked + .payment-label {
+        border-color: #ff7fa3;
+        background: #fff2f5;
+        color: #e95780;
+        font-weight: 700;
+    }
+
+    .payment-label .currency {
+        display: block;
+        font-size: 20px;
+        margin-bottom: 3px;
+    }
+
+    .payment-label .small {
+        display: block;
+        font-size: 12px;
+        color: #888;
+        font-weight: normal;
+    }
+
+    /* =========================
+       Restaurant
+    ========================= */
+
+    .restaurant-card {
+        border: 1px solid #eee;
+        border-radius: 15px;
+        padding: 18px;
+        margin-bottom: 18px;
+        background: #fff;
+    }
+
+    .restaurant-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .restaurant-number {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        border-radius: 50%;
+        background: #ffe1e9;
+        color: #e95780;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+    }
+
+    .restaurant-name {
+        flex: 1;
+    }
+
+    .restaurant-name input {
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .items {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .item-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1.8fr) 120px 80px 130px 42px;
+        gap: 8px;
+        align-items: center;
+        padding: 10px;
+        background: #fafafa;
+        border-radius: 10px;
+    }
+
+    .item-row input {
+        min-height: 40px;
+    }
+
+    .item-subtotal {
+        text-align: right;
+        font-weight: 700;
+        white-space: nowrap;
+        padding-right: 4px;
+    }
+
+    .btn-delete {
+        width: 38px;
+        height: 38px;
+        border: none;
+        border-radius: 9px;
+        background: #ffe8ee;
+        color: #e95780;
+        font-size: 18px;
+    }
+
+    .btn-delete:hover {
+        background: #ffd5df;
+    }
+
+    .item-header {
+        display: grid;
+        grid-template-columns: minmax(0, 1.8fr) 120px 80px 130px 42px;
+        gap: 8px;
+        padding: 0 10px 5px;
+        color: #999;
+        font-size: 12px;
+    }
+
+    .restaurant-bottom {
+        margin-top: 15px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        align-items: end;
+    }
+
+    .restaurant-summary {
+        text-align: right;
+        padding-top: 10px;
+    }
+
+    .summary-line {
+        margin: 4px 0;
+        color: #666;
+    }
+
+    .summary-total {
+        font-size: 18px;
+        font-weight: 800;
+        color: #333;
+    }
+
+    /* =========================
+       Buttons
+    ========================= */
+
+    .btn {
+        border: none;
+        border-radius: 10px;
+        padding: 11px 16px;
+        min-height: 44px;
+        font-weight: 700;
+        transition: 0.2s;
+    }
+
+    .btn-primary {
+        background: #ff7fa3;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #f56b91;
+    }
+
+    .btn-secondary {
+        background: #fff0f4;
+        color: #e95780;
+    }
+
+    .btn-secondary:hover {
+        background: #ffe2ea;
+    }
+
+    .btn-gray {
+        background: #f2f2f2;
+        color: #555;
+    }
+
+    .btn-gray:hover {
+        background: #e7e7e7;
+    }
+
+    .btn-danger {
+        background: #fff0f0;
+        color: #d9534f;
+    }
+
+    .btn-danger:hover {
+        background: #ffe0e0;
+    }
+
+    .button-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .add-restaurant {
+        width: 100%;
+        border: 2px dashed #ffb4c7;
+        background: #fff8fa;
+        color: #e95780;
+        padding: 15px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+    .add-restaurant:hover {
+        background: #fff0f4;
+    }
+
+    /* =========================
+       Quote Preview
+    ========================= */
+
+    .quote-preview {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 14px;
+        padding: 20px;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-family:
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            "Noto Sans TC",
+            "Microsoft JhengHei",
+            sans-serif;
+        line-height: 1.8;
+        font-size: 14px;
+        min-height: 200px;
+    }
+
+    .quote-actions {
+        margin-top: 14px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    /* =========================
+       Total
+    ========================= */
+
+    .grand-total {
+        margin-top: 20px;
+        background: #fff1f5;
+        border-radius: 14px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .grand-total-label {
+        color: #888;
+        font-size: 14px;
+    }
+
+    .grand-total-number {
+        color: #e95780;
+        font-size: 30px;
+        font-weight: 800;
+        margin-top: 3px;
+    }
+
+    /* =========================
+       Fee table
+    ========================= */
+
+    .fee-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+
+    .fee-table th,
+    .fee-table td {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        text-align: center;
+    }
+
+    .fee-table th {
+        background: #fff5f7;
+        font-weight: 700;
+    }
+
+    /* =========================
+       Sticky mobile action
+    ========================= */
+
+    .mobile-total-bar {
+        display: none;
+    }
+
+    /* =========================
+       Desktop
+    ========================= */
+
+    @media (min-width: 769px) {
+        .restaurant-card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+    }
+
+    /* =========================
+       Mobile
+    ========================= */
+
+    @media (max-width: 768px) {
+
+        body {
+            padding-bottom: 80px;
+        }
+
+        .container {
+            width: min(100% - 20px, 600px);
+            padding-top: 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+        }
+
+        .card {
+            padding: 17px;
+            border-radius: 15px;
+        }
+
+        .card-title {
+            font-size: 17px;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+            gap: 13px;
+        }
+
+        .form-group.full {
+            grid-column: auto;
+        }
+
+        .payment-options {
+            grid-template-columns: 1fr;
+        }
+
+        .restaurant-card {
+            padding: 13px;
+        }
+
+        .restaurant-header {
+            align-items: flex-start;
+        }
+
+        .restaurant-number {
+            margin-top: 4px;
+        }
+
+        .item-header {
+            display: none;
+        }
+
+        .item-row {
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            padding: 12px;
+        }
+
+        .item-row input:first-child {
+            grid-column: 1 / -1;
+        }
+
+        .item-subtotal {
+            text-align: left;
+            background: #fff;
+            padding: 9px 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .btn-delete {
+            justify-self: end;
+        }
+
+        .restaurant-bottom {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .restaurant-summary {
+            text-align: left;
+            background: #fff8fa;
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .button-row {
+            flex-direction: column;
+        }
+
+        .button-row .btn {
+            width: 100%;
+        }
+
+        .quote-actions {
+            flex-direction: column;
+        }
+
+        .quote-actions .btn {
+            width: 100%;
+        }
+
+        .fee-table {
+            font-size: 12px;
+        }
+
+        .fee-table th,
+        .fee-table td {
+            padding: 7px 4px;
+        }
+
+        .mobile-total-bar {
+            display: flex;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #eee;
+            padding:
+                10px
+                max(12px, env(safe-area-inset-right))
+                calc(10px + env(safe-area-inset-bottom))
+                max(12px, env(safe-area-inset-left));
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .mobile-total-info {
+            min-width: 0;
+        }
+
+        .mobile-total-label {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .mobile-total-value {
+            font-size: 18px;
+            color: #e95780;
+            font-weight: 800;
+        }
+
+        .mobile-total-bar .btn {
+            flex-shrink: 0;
+        }
+    }
+
+    /* =========================
+       Small phone
+    ========================= */
+
+    @media (max-width: 380px) {
+
+        .container {
+            width: calc(100% - 14px);
+        }
+
+        .card {
+            padding: 13px;
+        }
+
+        .item-row {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .mobile-total-value {
+            font-size: 16px;
+        }
+
+        .mobile-total-bar .btn {
+            padding: 9px 11px;
+            font-size: 13px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">KRTOYOU</div>
+        <div class="subtitle">韓國網站代訂・報價單產生器</div>
+    </div>
+
+
+    <!-- 基本資料 -->
+    <div class="card">
+
+        <div class="card-title">
+            <span>📋 基本資料</span>
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="date">日期</label>
+                <input type="text" id="date" placeholder="YYYYMMDD">
+            </div>
+
+            <div class="form-group">
+                <label for="customer">客戶名稱</label>
+                <input type="text" id="customer" placeholder="例如：Wenling">
+            </div>
+
+            <div class="form-group full">
+                <label for="address">配送地址</label>
+                <textarea
+                    id="address"
+                    placeholder="請輸入韓國配送地址"
+                ></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="exchangeRate">
+                    結算匯率
+                    <span style="font-weight:normal;color:#999;">
+                        （KRW → NTD）
+                    </span>
+                </label>
+
+                <input
+                    type="number"
+                    id="exchangeRate"
+                    value="40"
+                    min="1"
+                    step="0.1"
+                >
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 付款方式 -->
+    <div class="card">
+
+        <div class="card-title">
+            <span>💰 收款方式</span>
+        </div>
+
+        <div class="payment-options">
+
+            <div class="payment-option">
+
+                <input
+                    type="radio"
+                    name="payment"
+                    id="paymentNTD"
+                    value="NTD"
+                    checked
+                    onchange="updateAll()"
+                >
+
+                <label
+                    class="payment-label"
+                    for="paymentNTD"
+                >
+                    <span class="currency">🇹🇼 NT$ 台幣</span>
+                    <span class="small">
+                        台新銀行 / Richart
+                    </span>
+                </label>
+
+            </div>
+
+
+            <div class="payment-option">
+
+                <input
+                    type="radio"
+                    name="payment"
+                    id="paymentKRW"
+                    value="KRW"
+                    onchange="updateAll()"
+                >
+
+                <label
+                    class="payment-label"
+                    for="paymentKRW"
+                >
+                    <span class="currency">🇰🇷 ₩ 韓元</span>
+                    <span class="small">
+                        NH농협은행
+                    </span>
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 餐廳 -->
+    <div class="card">
+
+        <div class="card-title">
+            <span>🍽️ 訂單內容</span>
+        </div>
+
+        <div id="restaurants"></div>
+
+        <button
+            type="button"
+            class="add-restaurant"
+            onclick="addRestaurant()"
+        >
+            ＋ 新增一家餐廳
+        </button>
+
+    </div>
+
+
+    <!-- 服務費 -->
+    <div class="card">
+
+        <div class="card-title">
+            <span>🧾 代訂服務費</span>
+        </div>
+
+        <table class="fee-table">
+
+            <thead>
+                <tr>
+                    <th>每家餐廳商品金額</th>
+                    <th>台幣服務費</th>
+                    <th>韓元服務費</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>₩0 ～ ₩30,000</td>
+                    <td>NT$100</td>
+                    <td>₩4,500</td>
+                </tr>
+
+                <tr>
+                    <td>₩30,001 ～ ₩60,000</td>
+                    <td>NT$150</td>
+                    <td>₩6,500</td>
+                </tr>
+
+                <tr>
+                    <td>₩60,001 以上</td>
+                    <td>NT$200</td>
+                    <td>₩8,500</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <p style="font-size:12px;color:#999;margin:12px 0 0;">
+            ※ 服務費以「每一家餐廳」的商品金額分別計算。
+        </p>
+
+    </div>
+
+
+    <!-- 報價結果 -->
+    <div class="card">
+
+        <div class="card-title">
+            <span>🧾 報價單預覽</span>
+        </div>
+
+        <div
+            id="quotePreview"
+            class="quote-preview"
+        >
+            填寫訂單資料後，按下「產生報價單」。
+        </div>
+
+        <div class="quote-actions">
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="generateQuote()"
+            >
+                ✨ 產生報價單
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="copyQuote()"
+            >
+                📋 複製報價單
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-danger"
+                onclick="clearAll()"
+            >
+                🗑️ 清空訂單
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- 底部總金額 -->
+    <div class="grand-total">
+
+        <div class="grand-total-label">
+            本次應收金額
+        </div>
+
+        <div
+            id="grandTotal"
+            class="grand-total-number"
+        >
+            NT$ 0
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- 手機固定總額 -->
+<div class="mobile-total-bar">
+
+    <div class="mobile-total-info">
+
+        <div class="mobile-total-label">
+            本次應收
+        </div>
+
+        <div
+            id="mobileTotal"
+            class="mobile-total-value"
+        >
+            NT$ 0
+        </div>
+
+    </div>
+
+    <button
+        type="button"
+        class="btn btn-primary"
+        onclick="generateQuote()"
+    >
+        產生報價
+    </button>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   KRTOYOU 報價單產生器
+   ===================================================== */
+
+
+/* =========================
+   基本設定
+   ========================= */
+
+let restaurantCount = 0;
+
+
+/* 餐廳 Emoji */
+const restaurantEmojis = [
+    "🍢",
+    "🍗",
+    "🍔",
+    "🍕",
+    "🍜",
+    "🍱",
+    "🥘",
+    "🍣",
+    "🥩",
+    "🍰"
+];
+
+
+/* =========================
+   台灣日期
+   ========================= */
+
+function setTaiwanDate() {
+
+    const now = new Date();
+
+    const yyyy = now.getFullYear();
+
+    const mm = String(
+        now.getMonth() + 1
+    ).padStart(2, "0");
+
+    const dd = String(
+        now.getDate()
+    ).padStart(2, "0");
+
+    document.getElementById("date").value =
+        `${yyyy}${mm}${dd}`;
+}
+
+
+/* =========================
+   初始化
+   ========================= */
+
+window.addEventListener("DOMContentLoaded", () => {
+
+    setTaiwanDate();
+
+    addRestaurant();
+
+    updateAll();
+
+});
+
+
+/* =========================
+   新增餐廳
+   ========================= */
+
+function addRestaurant() {
+
+    restaurantCount++;
+
+    const id = restaurantCount;
+
+    const emoji =
+        restaurantEmojis[
+            (id - 1) % restaurantEmojis.length
+        ];
+
+    const restaurant = document.createElement("div");
+
+    restaurant.className = "restaurant-card";
+
+    restaurant.dataset.restaurantId = id;
+
+    restaurant.innerHTML = `
+
+        <div class="restaurant-header">
+
+            <div class="restaurant-number">
+                ${id}
+            </div>
+
+            <div class="restaurant-name">
+
+                <input
+                    type="text"
+                    class="restaurant-name-input"
+                    placeholder="餐廳名稱，例如：Puradak 炸雞"
+                    oninput="updateAll()"
+                >
+
+            </div>
+
+            <button
+                type="button"
+                class="btn-delete"
+                onclick="removeRestaurant(this)"
+                title="刪除餐廳"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="item-header">
+
+            <div>品項名稱</div>
+            <div>單價 KRW</div>
+            <div>數量</div>
+            <div>小計</div>
+            <div></div>
+
+        </div>
+
+
+        <div
+            class="items"
+            id="items-${id}"
+        ></div>
+
+
+        <button
+            type="button"
+            class="btn btn-secondary"
+            style="margin-top:10px;"
+            onclick="addItem(${id})"
+        >
+            ＋ 新增品項
+        </button>
+
+
+        <div class="restaurant-bottom">
+
+            <div class="form-group">
+
+                <label>
+                    🎟️ 優惠券 / 折扣
+                    <span style="font-weight:normal;color:#999;">
+                        KRW
+                    </span>
+                </label>
+
+                <input
+                    type="number"
+                    class="discount-input"
+                    value="0"
+                    min="0"
+                    step="100"
+                    oninput="updateAll()"
+                >
+
+            </div>
+
+
+            <div class="restaurant-summary">
+
+                <div class="summary-line">
+
+                    商品小計：
+                    <strong class="product-total">
+                        ₩0
+                    </strong>
+
+                </div>
+
+                <div class="summary-line">
+
+                    服務費：
+                    <strong class="service-fee">
+                        NT$100
+                    </strong>
+
+                </div>
+
+                <div class="summary-total">
+
+                    本店收款：
+                    <span class="restaurant-pay-total">
+                        NT$100
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+
+    document
+        .getElementById("restaurants")
+        .appendChild(restaurant);
+
+
+    addItem(id);
+
+    updateAll();
+}
+
+
+/* =========================
+   新增品項
+   ========================= */
+
+function addItem(restaurantId) {
+
+    const itemsContainer =
+        document.getElementById(
+            `items-${restaurantId}`
+        );
+
+    if (!itemsContainer) return;
+
+
+    const row = document.createElement("div");
+
+    row.className = "item-row";
+
+
+    row.innerHTML = `
+
+        <input
+            type="text"
+            class="item-name"
+            placeholder="品項名稱"
+            oninput="updateAll()"
+        >
+
+
+        <input
+            type="number"
+            class="item-price"
+            placeholder="單價"
+            min="0"
+            step="100"
+            oninput="updateAll()"
+        >
+
+
+        <input
+            type="number"
+            class="item-qty"
+            value="1"
+            min="1"
+            step="1"
+            oninput="updateAll()"
+        >
+
+
+        <div class="item-subtotal">
+            ₩0
+        </div>
+
+
+        <button
+            type="button"
+            class="btn-delete"
+            onclick="removeItem(this)"
+            title="刪除品項"
+        >
+            ×
+        </button>
+
+    `;
+
+
+    itemsContainer.appendChild(row);
+
+    updateAll();
+}
+
+
+/* =========================
+   刪除品項
+   ========================= */
+
+function removeItem(button) {
+
+    const row =
+        button.closest(".item-row");
+
+    if (!row) return;
+
+
+    const container =
+        row.parentElement;
+
+
+    /* 至少保留一個品項 */
+
+    if (
+        container.querySelectorAll(
+            ".item-row"
+        ).length <= 1
+    ) {
+
+        alert("每家餐廳至少需要保留一個品項。");
+
+        return;
+    }
+
+
+    row.remove();
+
+    updateAll();
+}
+
+
+/* =========================
+   刪除餐廳
+   ========================= */
+
+function removeRestaurant(button) {
+
+    const restaurant =
+        button.closest(".restaurant-card");
+
+    if (!restaurant) return;
+
+
+    const allRestaurants =
+        document.querySelectorAll(
+            ".restaurant-card"
+        );
+
+
+    if (allRestaurants.length <= 1) {
+
+        alert("至少需要保留一家餐廳。");
+
+        return;
+    }
+
+
+    restaurant.remove();
+
+    renumberRestaurants();
+
+    updateAll();
+}
+
+
+/* =========================
+   餐廳重新編號
+   ========================= */
+
+function renumberRestaurants() {
+
+    const restaurants =
+        document.querySelectorAll(
+            ".restaurant-card"
+        );
+
+
+    restaurants.forEach(
+        (restaurant, index) => {
+
+            const number =
+                restaurant.querySelector(
+                    ".restaurant-number"
+                );
+
+            if (number) {
+                number.textContent =
+                    index + 1;
+            }
+
+        }
+    );
+}
+
+
+/* =========================
+   取得服務費
+   ========================= */
+
+function getFee(productTotalKRW) {
+
+    if (productTotalKRW <= 30000) {
+
+        return {
+            ntd: 100,
+            krw: 4500
+        };
+
+    }
+
+
+    if (productTotalKRW <= 60000) {
+
+        return {
+            ntd: 150,
+            krw: 6500
+        };
+
+    }
+
+
+    return {
+        ntd: 200,
+        krw: 8500
+    };
+}
+
+
+/* =========================
+   取得付款方式
+   ========================= */
+
+function getPaymentMethod() {
+
+    const selected =
+        document.querySelector(
+            'input[name="payment"]:checked'
+        );
+
+    return selected
+        ? selected.value
+        : "NTD";
+}
+
+
+/* =========================
+   計算單一餐廳
+   ========================= */
+
+function calculateRestaurant(
+    restaurant
+) {
+
+    let itemTotal = 0;
+
+
+    const items =
+        restaurant.querySelectorAll(
+            ".item-row"
+        );
+
+
+    items.forEach(item => {
+
+        const price =
+            Number(
+                item.querySelector(
+                    ".item-price"
+                ).value
+            ) || 0;
+
+
+        const qty =
+            Number(
+                item.querySelector(
+                    ".item-qty"
+                ).value
+            ) || 0;
+
+
+        const subtotal =
+            price * qty;
+
+
+        itemTotal += subtotal;
+
+
+        const subtotalElement =
+            item.querySelector(
+                ".item-subtotal"
+            );
+
+
+        subtotalElement.textContent =
+            `₩${formatNumber(subtotal)}`;
+
+    });
+
+
+    const discount =
+        Number(
+            restaurant.querySelector(
+                ".discount-input"
+            ).value
+        ) || 0;
+
+
+    const productTotal =
+        Math.max(
+            0,
+            itemTotal - discount
+        );
+
+
+    const fee =
+        getFee(productTotal);
+
+
+    const exchangeRate =
+        Number(
+            document.getElementById(
+                "exchangeRate"
+            ).value
+        ) || 40;
+
+
+    /*
+       NTD：
+       每一家餐廳個別計算後四捨五入
+    */
+
+    const ntdProduct =
+        productTotal / exchangeRate;
+
+
+    const ntdSubtotal =
+        Math.round(
+            ntdProduct + fee.ntd
+        );
+
+
+    /*
+       KRW：
+       商品金額 + 韓元服務費
+    */
+
+    const krwSubtotal =
+        productTotal + fee.krw;
+
+
+    return {
+
+        itemTotal,
+
+        discount,
+
+        productTotal,
+
+        fee,
+
+        ntdProduct,
+
+        ntdSubtotal,
+
+        krwSubtotal
+
+    };
+}
+
+
+/* =========================
+   更新全部
+   ========================= */
+
+function updateAll() {
+
+    const restaurants =
+        document.querySelectorAll(
+            ".restaurant-card"
+        );
+
+
+    const payment =
+        getPaymentMethod();
+
+
+    let grandTotal = 0;
+
+
+    restaurants.forEach(
+        restaurant => {
+
+            const data =
+                calculateRestaurant(
+                    restaurant
+                );
+
+
+            const productTotalElement =
+                restaurant.querySelector(
+                    ".product-total"
+                );
+
+
+            const feeElement =
+                restaurant.querySelector(
+                    ".service-fee"
+                );
+
+
+            const payTotalElement =
+                restaurant.querySelector(
+                    ".restaurant-pay-total"
+                );
+
+
+            productTotalElement.textContent =
+                `₩${formatNumber(
+                    data.productTotal
+                )}`;
+
+
+            if (payment === "NTD") {
+
+                feeElement.textContent =
+                    `NT$${formatNumber(
+                        data.fee.ntd
+                    )}`;
+
+
+                payTotalElement.textContent =
+                    `NT$${formatNumber(
+                        data.ntdSubtotal
+                    )}`;
+
+
+                grandTotal +=
+                    data.ntdSubtotal;
+
+            } else {
+
+                feeElement.textContent =
+                    `₩${formatNumber(
+                        data.fee.krw
+                    )}`;
+
+
+                payTotalElement.textContent =
+                    `₩${formatNumber(
+                        data.krwSubtotal
+                    )}`;
+
+
+                grandTotal +=
+                    data.krwSubtotal;
+
+            }
+
+        }
+    );
+
+
+    const currency =
+        payment === "NTD"
+            ? "NT$"
+            : "₩";
+
+
+    document.getElementById(
+        "grandTotal"
+    ).textContent =
+        `${currency} ${formatNumber(
+            grandTotal
+        )}`;
+
+
+    document.getElementById(
+        "mobileTotal"
+    ).textContent =
+        `${currency} ${formatNumber(
+            grandTotal
+        )}`;
+}
+
+
+/* =========================
+   格式化數字
+   ========================= */
+
+function formatNumber(number) {
+
+    return Math.round(number)
+        .toLocaleString("en-US");
+
+}
+
+
+/* =========================
+   產生報價單
+   ========================= */
+
+function generateQuote() {
+
+    const restaurants =
+        document.querySelectorAll(
+            ".restaurant-card"
+        );
+
+
+    const customer =
+        document.getElementById(
+            "customer"
+        ).value.trim();
+
+
+    const date =
+        document.getElementById(
+            "date"
+        ).value.trim();
+
+
+    const address =
+        document.getElementById(
+            "address"
+        ).value.trim();
+
+
+    const exchangeRate =
+        Number(
+            document.getElementById(
+                "exchangeRate"
+            ).value
+        ) || 40;
+
+
+    const payment =
+        getPaymentMethod();
+
+
+    let quote =
+`🩷 謝謝您選擇 KRTOYOU 的代訂服務！
+
+以下為本次訂購的❗️報價明細❗️，請確認訂單內容、配送地址及金額無誤後，再進行匯款。
+
+━━━━━━━━━━━━━━
+`;
+
+
+    if (date) {
+
+        quote +=
+`📅 訂單日期：${date}
+
+`;
+
+    }
+
+
+    if (customer) {
+
+        quote +=
+`👤 客戶：${customer}
+
+`;
+
+    }
+
+
+    if (address) {
+
+        quote +=
+`🏠 送貨地址
+
+${address}
+
+`;
+
+    }
+
+
+    quote +=
+`━━━━━━━━━━━━━━
+
+`;
+
+
+    let grandNTD = 0;
+
+    let grandKRW = 0;
+
+    let restaurantIndex = 0;
+
+
+    restaurants.forEach(
+        restaurant => {
+
+            restaurantIndex++;
+
+
+            const emoji =
+                restaurantEmojis[
+                    (restaurantIndex - 1)
+                    % restaurantEmojis.length
+                ];
+
+
+            const name =
+                restaurant.querySelector(
+                    ".restaurant-name-input"
+                ).value.trim()
+                || `餐廳 ${restaurantIndex}`;
+
+
+            const data =
+                calculateRestaurant(
+                    restaurant
+                );
+
+
+            quote +=
+`${emoji} ${name}
+
+`;
+
+
+            const items =
+                restaurant.querySelectorAll(
+                    ".item-row"
+                );
+
+
+            items.forEach(item => {
+
+                const itemName =
+                    item.querySelector(
+                        ".item-name"
+                    ).value.trim()
+                    || "未命名品項";
+
+
+                const price =
+                    Number(
+                        item.querySelector(
+                            ".item-price"
+                        ).value
+                    ) || 0;
+
+
+                const qty =
+                    Number(
+                        item.querySelector(
+                            ".item-qty"
+                        ).value
+                    ) || 0;
+
+
+                if (qty > 1) {
+
+                    quote +=
+`・${itemName} ×${qty} 🇰🇷 ₩${formatNumber(price)}
+
+`;
+
+                } else {
+
+                    quote +=
+`・${itemName} 🇰🇷 ₩${formatNumber(price)}
+
+`;
+
+                }
+
+            });
+
+
+            if (data.discount > 0) {
+
+                quote +=
+`🎟️ 優惠券折抵：-₩${formatNumber(
+    data.discount
+)}
+
+`;
+
+            }
+
+
+            quote +=
+`🇰🇷 商品金額：₩${formatNumber(
+    data.productTotal
+)}
+`;
+
+
+            if (payment === "NTD") {
+
+                quote +=
+`🇹🇼 換算金額：NT$${formatNumber(
+    data.ntdProduct
+)}
+`;
+
+
+                quote +=
+`🧾 代訂服務費：NT$${formatNumber(
+    data.fee.ntd
+)}
+
+`;
+
+
+                quote +=
+`小計：NT$${formatNumber(
+    data.ntdSubtotal
+)}
+
+`;
+
+
+                grandNTD +=
+                    data.ntdSubtotal;
+
+            } else {
+
+                quote +=
+`🧾 代訂服務費：₩${formatNumber(
+    data.fee.krw
+)}
+
+`;
+
+
+                quote +=
+`小計：₩${formatNumber(
+    data.krwSubtotal
+)}
+
+`;
+
+
+                grandKRW +=
+                    data.krwSubtotal;
+
+            }
+
+
+            quote +=
+`---
+
+`;
+
+        }
+    );
+
+
+    quote +=
+`━━━━━━━━━━━━━━
+
+📌 本次 KRTOYOU 結算匯率
+
+🇰🇷 ₩${formatNumber(exchangeRate)} ＝ 🇹🇼 NT$1
+
+`;
+
+
+    if (payment === "NTD") {
+
+        quote +=
+`💰 本次應付總金額：NT$${formatNumber(
+    grandNTD
+)}
+
+`;
+
+        quote +=
+`━━━━━━━━━━━━━━
+
+💳 台幣匯款資訊
+
+🏦 台新銀行（812）
+帳號：28881003712059
+
+或使用 Richart 直接轉帳：
+https://richart.tw/TSDIB_RichartWeb/RC04/RC040300?token=8B0B4F8B2B7893B4DC6FB4D553667015
+
+`;
+
+    } else {
+
+        quote +=
+`💰 本次應付總金額：₩${formatNumber(
+    grandKRW
+)}
+
+`;
+
+        quote +=
+`━━━━━━━━━━━━━━
+
+💳 韓元匯款資訊
+
+🏦 농협은행
+계좌번호：3020435244411
+예금주：이효빈
+
+`;
+
+    }
+
+
+    quote +=
+`━━━━━━━━━━━━━━
+
+📍 因本次訂購為不同店家，代訂服務費分別計算。
+
+⚠️ 訂購流程
+
+① 確認以上訂單內容及配送地址
+② 完成匯款
+③ KRTOYOU 確認收到款項後，才會協助下單
+
+❗️匯款完成前皆尚未下單，請確認內容無誤後再進行匯款❗️
+
+謝謝您的支持 🩷
+
+如果覺得 KRTOYOU 的服務不錯，也歡迎幫我們分享給身邊有需要的朋友，讓更多人知道 KRTOYOU！
+`;
+
+
+    document.getElementById(
+        "quotePreview"
+    ).textContent = quote;
+
+
+    updateAll();
+}
+
+
+/* =========================
+   複製報價單
+   ========================= */
+
+async function copyQuote() {
+
+    const quote =
+        document.getElementById(
+            "quotePreview"
+        ).textContent.trim();
+
+
+    if (
+        !quote ||
+        quote.includes(
+            "填寫訂單資料後"
+        )
+    ) {
+
+        alert("請先產生報價單。");
+
+        return;
+    }
+
+
+    try {
+
+        await navigator.clipboard.writeText(
+            quote
+        );
+
+        alert("✅ 報價單已複製！");
+
+    } catch (error) {
+
+        /*
+           舊瀏覽器 fallback
+        */
+
+        const textarea =
+            document.createElement(
+                "textarea"
+            );
+
+
+        textarea.value = quote;
+
+        textarea.style.position =
+            "fixed";
+
+        textarea.style.opacity = "0";
+
+
+        document.body.appendChild(
+            textarea
+        );
+
+
+        textarea.select();
+
+
+        try {
+
+            document.execCommand(
+                "copy"
+            );
+
+            alert("✅ 報價單已複製！");
+
+        } catch (e) {
+
+            alert(
+                "複製失敗，請手動選取報價單文字。"
+            );
+
+        }
+
+
+        textarea.remove();
+    }
+}
+
+
+/* =========================
+   清空全部
+   ========================= */
+
+function clearAll() {
+
+    const confirmed =
+        confirm(
+            "確定要清空目前這份訂單嗎？"
+        );
+
+
+    if (!confirmed) return;
+
+
+    document.getElementById(
+        "customer"
+    ).value = "";
+
+
+    document.getElementById(
+        "address"
+    ).value = "";
+
+
+    document.getElementById(
+        "exchangeRate"
+    ).value = 40;
+
+
+    document.getElementById(
+        "restaurants"
+    ).innerHTML = "";
+
+
+    restaurantCount = 0;
+
+
+    document.getElementById(
+        "quotePreview"
+    ).textContent =
+        "填寫訂單資料後，按下「產生報價單」。";
+
+
+    document.getElementById(
+        "paymentNTD"
+    ).checked = true;
+
+
+    addRestaurant();
+
+    updateAll();
+
+}
+
+</script>
+
+</body>
+</html>
