@@ -664,10 +664,6 @@ textarea {
     width: 100%;
     max-width: 100%;
     min-width: 0;
-
-    /*
-      16px 避免 iPhone Safari 自動放大
-    */
     font-size: 16px;
   }
 
@@ -874,11 +870,6 @@ textarea {
 
     overflow: hidden;
   }
-
-  /*
-    只有表格自己可以左右滑，
-    不讓整個網頁被表格撐寬
-  */
 
   .fee-table-wrapper {
     display: block;
@@ -2836,6 +2827,7 @@ function generateQuote() {
 
     });
 
+
   }
 
 
@@ -2908,6 +2900,16 @@ function generateQuote() {
     `\n\n━━━━━━━━━━━━━━\n\n`;
 
 
+  /* =================================================
+     不同訂單提醒
+     
+     網站：
+     不論幾筆都顯示原本的提醒
+     
+     外送：
+     只有訂購 2 間以上餐廳才顯示
+  ================================================= */
+
   if (currentMode === "website") {
 
     output +=
@@ -2915,8 +2917,17 @@ function generateQuote() {
 
   } else {
 
-    output +=
-      `📍 本次為不同店家訂購，各店家將分別計算代訂服務費。\n\n`;
+    const deliveryOrderCount =
+      document.querySelectorAll(
+        ".delivery-order"
+      ).length;
+
+    if (deliveryOrderCount >= 2) {
+
+      output +=
+        `📍 本次為不同店家訂購，各店家將分別計算代訂服務費。\n\n`;
+
+    }
 
   }
 
