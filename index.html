@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
@@ -516,7 +517,6 @@ textarea {
 
 /* =====================================================
    iPhone / Mobile
-   以 390px / 402px 為主要設計寬度
 ===================================================== */
 
 @media (max-width: 700px) {
@@ -531,9 +531,6 @@ textarea {
   body {
     -webkit-text-size-adjust: 100%;
   }
-
-
-  /* ---------- 首頁 ---------- */
 
   #modeSelect {
     width: 100%;
@@ -586,9 +583,6 @@ textarea {
     font-size: 13px;
   }
 
-
-  /* ---------- 主容器 ---------- */
-
   .container {
     width: 100%;
     max-width: 100%;
@@ -597,9 +591,6 @@ textarea {
       12px
       calc(110px + env(safe-area-inset-bottom));
   }
-
-
-  /* ---------- Header ---------- */
 
   .top-header {
     width: 100%;
@@ -622,9 +613,6 @@ textarea {
     padding: 8px 10px;
     font-size: 13px;
   }
-
-
-  /* ---------- Card ---------- */
 
   .card {
     width: 100%;
@@ -671,9 +659,6 @@ textarea {
     min-height: 90px;
   }
 
-
-  /* ---------- Payment ---------- */
-
   .payment-options {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -692,9 +677,6 @@ textarea {
     padding: 11px 5px;
     font-size: 14px;
   }
-
-
-  /* ---------- Order Card ---------- */
 
   .order-card {
     width: 100%;
@@ -723,17 +705,6 @@ textarea {
     font-size: 13px;
     padding: 6px 9px;
   }
-
-
-  /* =================================================
-     商品
-     手機版：
-     商品名稱一整排
-     ↓
-     單價 / 數量
-     ↓
-     小計
-  ================================================= */
 
   .items {
     width: 100%;
@@ -769,8 +740,6 @@ textarea {
     overflow: hidden;
   }
 
-  /* 商品名稱 */
-
   .item-row .item-name {
     grid-column: 1;
     grid-row: 1;
@@ -778,8 +747,6 @@ textarea {
     width: 100%;
     min-width: 0;
   }
-
-  /* 刪除 */
 
   .item-row .delete-item {
     grid-column: 2;
@@ -795,8 +762,6 @@ textarea {
     padding: 0;
   }
 
-  /* 單價 */
-
   .item-row .item-price {
     grid-column: 1;
     grid-row: 2;
@@ -804,8 +769,6 @@ textarea {
     width: 100%;
     min-width: 0;
   }
-
-  /* 數量 */
 
   .item-row .item-qty {
     grid-column: 2;
@@ -816,8 +779,6 @@ textarea {
 
     text-align: center;
   }
-
-  /* 小計 */
 
   .item-total {
     grid-column: 1 / -1;
@@ -837,9 +798,6 @@ textarea {
     overflow-wrap: anywhere;
   }
 
-
-  /* ---------- 商品按鈕 ---------- */
-
   .add-item-btn,
   .add-order-btn {
     display: block;
@@ -854,9 +812,6 @@ textarea {
 
     text-align: center;
   }
-
-
-  /* ---------- Website Notice ---------- */
 
   .notice {
     width: 100%;
@@ -900,9 +855,6 @@ textarea {
     white-space: nowrap;
   }
 
-
-  /* ---------- Fee Preview ---------- */
-
   .order-fee-preview {
     width: 100%;
     max-width: 100%;
@@ -912,9 +864,6 @@ textarea {
     overflow-wrap: anywhere;
     word-break: break-word;
   }
-
-
-  /* ---------- Summary ---------- */
 
   .summary {
     width: 100%;
@@ -947,9 +896,6 @@ textarea {
     font-size: 19px;
   }
 
-
-  /* ---------- Action Buttons ---------- */
-
   .action-buttons {
     width: 100%;
     flex-direction: column;
@@ -961,9 +907,6 @@ textarea {
     width: 100%;
     min-width: 0;
   }
-
-
-  /* ---------- Quote ---------- */
 
   #quoteOutput {
     width: 100%;
@@ -980,9 +923,6 @@ textarea {
 
     white-space: pre-wrap;
   }
-
-
-  /* ---------- Mobile Bottom Total ---------- */
 
   .mobile-total {
     display: flex;
@@ -1020,10 +960,6 @@ textarea {
 }
 
 
-/* =====================================================
-   更窄螢幕：iPhone SE / 舊手機
-===================================================== */
-
 @media (max-width: 360px) {
 
   .container {
@@ -1055,450 +991,415 @@ textarea {
   }
 }
 </style>
+
 </head>
 
 <body>
-
-
-<!-- =====================================================
-     首頁：選擇服務
-===================================================== -->
 
 <section id="modeSelect">
 
   <div class="mode-wrapper">
 
-    <div class="logo">KRTOYOU</div>
+```
+<div class="logo">KRTOYOU</div>
 
-    <div class="subtitle">
-      韓國代訂報價系統
-    </div>
+<div class="subtitle">
+  韓國代訂報價系統
+</div>
 
-    <div class="mode-cards">
+<div class="mode-cards">
 
-      <div class="mode-card" onclick="selectMode('website')">
+  <div class="mode-card" onclick="selectMode('website')">
 
-        <div class="mode-icon">🛍️</div>
+    <div class="mode-icon">🛍️</div>
 
-        <h2>韓國網站代訂</h2>
+    <h2>韓國網站代訂</h2>
 
-        <p>
-          Olive Young、MUSINSA、Coupang、29CM<br>
-          韓國品牌官網等
-        </p>
+    <p>
+      Olive Young、MUSINSA、Coupang、29CM<br>
+      韓國品牌官網等
+    </p>
 
-      </div>
+  </div>
 
 
-      <div class="mode-card" onclick="selectMode('delivery')">
+  <div class="mode-card" onclick="selectMode('delivery')">
 
-        <div class="mode-icon">🍗</div>
+    <div class="mode-icon">🍗</div>
 
-        <h2>韓國食物外送代訂</h2>
+    <h2>韓國食物外送代訂</h2>
 
-        <p>
-          배달의민족、Coupang Eats、요기요<br>
-          韓國餐廳外送
-        </p>
+    <p>
+      배달의민족、Coupang Eats、요기요<br>
+      韓國餐廳外送
+    </p>
 
-      </div>
+  </div>
 
-    </div>
+</div>
+```
 
   </div>
 
 </section>
 
-
-
-<!-- =====================================================
-     報價系統
-===================================================== -->
-
 <section id="quoteSystem" style="display:none;">
 
 <div class="container">
 
-
-  <!-- Header -->
-
   <div class="top-header">
 
-    <h1 id="pageTitle">KRTOYOU</h1>
+```
+<h1 id="pageTitle">KRTOYOU</h1>
 
-    <button class="back-btn" onclick="goBack()">
-      ← 重新選擇
-    </button>
+<button class="back-btn" onclick="goBack()">
+  ← 重新選擇
+</button>
+```
 
   </div>
-
-
-
-  <!-- =================================================
-       基本資料
-  ================================================= -->
 
   <div class="card">
 
-    <div class="card-title">
-      📋 基本資料
-    </div>
+```
+<div class="card-title">
+  📋 基本資料
+</div>
 
-    <div class="grid">
+<div class="grid">
 
-      <div class="field">
+  <div class="field">
 
-        <label>訂單日期</label>
+    <label>訂單日期</label>
 
-        <input
-          type="date"
-          id="orderDate"
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>訂單編號</label>
-
-        <input
-          type="text"
-          id="orderNumber"
-          placeholder="例如：20260912-001"
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>客戶名稱</label>
-
-        <input
-          type="text"
-          id="customerName"
-          placeholder="請輸入客戶名稱"
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>結算匯率（₩ / NT$1）</label>
-
-        <input
-          type="number"
-          id="exchangeRate"
-          value="40"
-          min="1"
-          inputmode="decimal"
-        >
-
-      </div>
-
-
-      <div class="field full">
-
-        <label>配送／收貨地址</label>
-
-        <textarea
-          id="address"
-          placeholder="請輸入韓國配送地址"
-        ></textarea>
-
-      </div>
-
-    </div>
+    <input
+      type="date"
+      id="orderDate"
+    >
 
   </div>
 
 
+  <div class="field">
 
-  <!-- =================================================
-       付款方式
-  ================================================= -->
+    <label>訂單編號</label>
+
+    <input
+      type="text"
+      id="orderNumber"
+      placeholder="例如：20260912-001"
+    >
+
+  </div>
+
+
+  <div class="field">
+
+    <label>客戶名稱</label>
+
+    <input
+      type="text"
+      id="customerName"
+      placeholder="請輸入客戶名稱"
+    >
+
+  </div>
+
+
+  <div class="field">
+
+    <label>結算匯率（₩ / NT$1）</label>
+
+    <input
+      type="number"
+      id="exchangeRate"
+      value="40"
+      min="1"
+      inputmode="decimal"
+    >
+
+  </div>
+
+
+  <div class="field full">
+
+    <label>配送／收貨地址</label>
+
+    <textarea
+      id="address"
+      placeholder="請輸入韓國配送地址"
+    ></textarea>
+
+  </div>
+
+</div>
+```
+
+  </div>
 
   <div class="card">
 
-    <div class="card-title">
-      💳 付款方式
-    </div>
+```
+<div class="card-title">
+  💳 付款方式
+</div>
 
-    <div class="payment-options">
+<div class="payment-options">
 
-      <div class="payment-option">
+  <div class="payment-option">
 
-        <input
-          type="radio"
-          name="payment"
-          id="payNTD"
-          value="NTD"
-          checked
-        >
+    <input
+      type="radio"
+      name="payment"
+      id="payNTD"
+      value="NTD"
+      checked
+    >
 
-        <label for="payNTD">
-          🇹🇼 台幣付款
-        </label>
-
-      </div>
-
-
-      <div class="payment-option">
-
-        <input
-          type="radio"
-          name="payment"
-          id="payKRW"
-          value="KRW"
-        >
-
-        <label for="payKRW">
-          🇰🇷 韓元付款
-        </label>
-
-      </div>
-
-    </div>
+    <label for="payNTD">
+      🇹🇼 台幣付款
+    </label>
 
   </div>
 
 
+  <div class="payment-option">
 
-  <!-- =================================================
-       網站代訂
-  ================================================= -->
+    <input
+      type="radio"
+      name="payment"
+      id="payKRW"
+      value="KRW"
+    >
+
+    <label for="payKRW">
+      🇰🇷 韓元付款
+    </label>
+
+  </div>
+
+</div>
+```
+
+  </div>
 
   <div
     id="websiteSection"
     style="display:none;"
   >
 
-    <div class="card">
+```
+<div class="card">
 
-      <div class="card-title">
-        🛍️ 韓國網站代訂
-      </div>
-
-
-      <div class="notice">
-
-        <strong>🇰🇷 韓國網站代訂服務費</strong>
+  <div class="card-title">
+    🛍️ 韓國網站代訂
+  </div>
 
 
-        <div class="fee-table-wrapper">
+  <div class="notice">
 
-          <table class="fee-table">
-
-            <thead>
-
-              <tr>
-                <th>商品金額</th>
-                <th>台幣服務費</th>
-                <th>韓元服務費</th>
-              </tr>
-
-            </thead>
+    <strong>🇰🇷 韓國網站代訂服務費</strong>
 
 
-            <tbody>
+    <div class="fee-table-wrapper">
 
-              <tr>
-                <td>₩50,000 以下</td>
-                <td>NT$100</td>
-                <td>₩4,500</td>
-              </tr>
+      <table class="fee-table">
 
-              <tr>
-                <td>₩50,001～₩100,000</td>
-                <td>NT$150</td>
-                <td>₩6,500</td>
-              </tr>
+        <thead>
 
-              <tr>
-                <td>₩100,001～₩200,000</td>
-                <td>NT$250</td>
-                <td>₩10,500</td>
-              </tr>
+          <tr>
+            <th>商品金額</th>
+            <th>台幣服務費</th>
+            <th>韓元服務費</th>
+          </tr>
 
-              <tr>
-                <td>₩200,001～₩300,000</td>
-                <td>NT$300</td>
-                <td>₩13,000</td>
-              </tr>
-
-            </tbody>
-
-          </table>
-
-        </div>
+        </thead>
 
 
-        <br>
+        <tbody>
 
-        ※ 商品費用及韓國境內運費另計<br>
-        ※ 商品費用換算為台幣時，將依當日匯率計算後提供報價<br>
-        ※ 不同網站／不同結帳訂單分開計算<br>
-        ※ 單筆訂單最高 ₩300,000<br>
-        ※ 超過單筆訂單上限，需事前確認是否承接<br>
-        ※ 不包含集運運回服務，請自行提供韓國集運地址<br>
-        ※ 特殊商品、人工聯繫、訂單修改等服務另行報價
+          <tr>
+            <td>₩50,000 以下</td>
+            <td>NT$100</td>
+            <td>₩4,500</td>
+          </tr>
 
-      </div>
+          <tr>
+            <td>₩50,001～₩100,000</td>
+            <td>NT$150</td>
+            <td>₩6,500</td>
+          </tr>
 
+          <tr>
+            <td>₩100,001～₩200,000</td>
+            <td>NT$250</td>
+            <td>₩10,500</td>
+          </tr>
 
-      <div id="websiteOrders"></div>
+          <tr>
+            <td>₩200,001～₩300,000</td>
+            <td>NT$300</td>
+            <td>₩13,000</td>
+          </tr>
 
+        </tbody>
 
-      <button
-        class="add-order-btn"
-        onclick="addWebsiteOrder()"
-      >
-        ＋ 新增網站訂單
-      </button>
+      </table>
 
     </div>
+
+
+    <br>
+
+    ※ 商品費用及韓國境內運費另計<br>
+    ※ 商品費用換算為台幣時，將依當日匯率計算後提供報價<br>
+    ※ 不同網站／不同結帳訂單分開計算<br>
+    ※ 單筆訂單最高 ₩300,000<br>
+    ※ 超過單筆訂單上限，需事前確認是否承接<br>
+    ※ 不包含集運運回服務，請自行提供韓國集運地址<br>
+    ※ 特殊商品、人工聯繫、訂單修改等服務另行報價
 
   </div>
 
 
+  <div id="websiteOrders"></div>
 
-  <!-- =================================================
-       食物外送
-  ================================================= -->
+
+  <button
+    class="add-order-btn"
+    onclick="addWebsiteOrder()"
+  >
+    ＋ 新增網站訂單
+  </button>
+
+</div>
+```
+
+  </div>
 
   <div
     id="deliverySection"
     style="display:none;"
   >
 
-    <div class="card">
+```
+<div class="card">
 
-      <div class="card-title">
-        🍗 韓國食物外送代訂
-      </div>
-
-
-      <div id="deliveryOrders"></div>
+  <div class="card-title">
+    🍗 韓國食物外送代訂
+  </div>
 
 
-      <button
-        class="add-order-btn"
-        onclick="addDeliveryOrder()"
-      >
-        ＋ 新增餐廳
-      </button>
+  <div id="deliveryOrders"></div>
 
-    </div>
+
+  <button
+    class="add-order-btn"
+    onclick="addDeliveryOrder()"
+  >
+    ＋ 新增餐廳
+  </button>
+
+</div>
+```
+
+  </div>
+
+  <div class="card">
+
+```
+<div class="card-title">
+  🧾 報價預覽
+</div>
+
+
+<div class="summary">
+
+  <div class="summary-line">
+
+    <span>商品金額</span>
+
+    <strong id="summaryProduct">
+      ₩0
+    </strong>
 
   </div>
 
 
+  <div class="summary-line">
 
-  <!-- =================================================
-       報價
-  ================================================= -->
+    <span>韓國境內運費</span>
 
-  <div class="card">
+    <strong id="summaryShipping">
+      ₩0
+    </strong>
 
-    <div class="card-title">
-      🧾 報價預覽
-    </div>
-
-
-    <div class="summary">
-
-      <div class="summary-line">
-
-        <span>商品金額</span>
-
-        <strong id="summaryProduct">
-          ₩0
-        </strong>
-
-      </div>
+  </div>
 
 
-      <div class="summary-line">
+  <div class="summary-line">
 
-        <span>韓國境內運費</span>
+    <span>代訂服務費</span>
 
-        <strong id="summaryShipping">
-          ₩0
-        </strong>
+    <strong id="summaryFee">
+      ₩0
+    </strong>
 
-      </div>
-
-
-      <div class="summary-line">
-
-        <span>代訂服務費</span>
-
-        <strong id="summaryFee">
-          ₩0
-        </strong>
-
-      </div>
+  </div>
 
 
-      <div class="summary-line summary-total">
+  <div class="summary-line summary-total">
 
-        <span>應付總金額</span>
+    <span>應付總金額</span>
 
-        <strong id="summaryTotal">
-          NT$0
-        </strong>
-
-      </div>
-
-    </div>
-
-
-    <div class="action-buttons">
-
-      <button
-        class="primary-btn"
-        onclick="generateQuote()"
-      >
-        產生報價文字
-      </button>
-
-
-      <button
-        class="secondary-btn"
-        onclick="clearAll()"
-      >
-        清除重填
-      </button>
-
-    </div>
-
-
-    <div
-      id="quoteOutput"
-      style="display:none;"
-    ></div>
-
-
-    <button
-      id="copyBtn"
-      class="primary-btn"
-      style="display:none; margin-top:10px;"
-      onclick="copyQuote()"
-    >
-      📋 複製報價
-    </button>
+    <strong id="summaryTotal">
+      NT$0
+    </strong>
 
   </div>
 
 </div>
 
 
+<div class="action-buttons">
 
-<!-- =====================================================
-     Mobile Total
-===================================================== -->
+  <button
+    class="primary-btn"
+    onclick="generateQuote()"
+  >
+    產生報價文字
+  </button>
+
+
+  <button
+    class="secondary-btn"
+    onclick="clearAll()"
+  >
+    清除重填
+  </button>
+
+</div>
+
+
+<div
+  id="quoteOutput"
+  style="display:none;"
+></div>
+
+
+<button
+  id="copyBtn"
+  class="primary-btn"
+  style="display:none; margin-top:10px;"
+  onclick="copyQuote()"
+>
+  📋 複製報價
+</button>
+```
+
+  </div>
+
+</div>
 
 <div class="mobile-total">
 
@@ -1512,10 +1413,7 @@ textarea {
 
 </div>
 
-
 </section>
-
-
 
 <script>
 
@@ -2204,6 +2102,7 @@ function getDeliveryFee(productTotal) {
 
 /* =====================================================
    更新摘要
+   台幣換算：無條件進位 Math.ceil()
 ===================================================== */
 
 function updateSummary() {
@@ -2326,11 +2225,11 @@ function updateSummary() {
     if (payment === "NTD") {
 
       totalNTD =
-        Math.round(
+        Math.ceil(
           productTotal / rate +
-          shippingTotal / rate +
-          feeNTD
-        );
+          shippingTotal / rate
+        ) +
+        feeNTD;
 
     } else {
 
@@ -2347,10 +2246,10 @@ function updateSummary() {
     if (payment === "NTD") {
 
       totalNTD =
-        Math.round(
-          productTotal / rate +
-          feeNTD
-        );
+        Math.ceil(
+          productTotal / rate
+        ) +
+        feeNTD;
 
     } else {
 
@@ -2615,8 +2514,11 @@ function generateQuote() {
 
       } else {
 
+        /*
+          台幣換算改為無條件進位
+        */
         const converted =
-          Math.round(
+          Math.ceil(
             product / rate +
             shipping / rate
           );
@@ -2778,8 +2680,11 @@ function generateQuote() {
         `\n🇰🇷 商品實付金額：₩${product.toLocaleString()}\n`;
 
 
+      /*
+        台幣換算改為無條件進位
+      */
       const converted =
-        Math.round(
+        Math.ceil(
           product / rate
         );
 
@@ -2827,7 +2732,6 @@ function generateQuote() {
 
     });
 
-
   }
 
 
@@ -2844,8 +2748,11 @@ function generateQuote() {
 
     if (currentMode === "website") {
 
+      /*
+        商品＋運費換算後無條件進位
+      */
       finalNTD =
-        Math.round(
+        Math.ceil(
           totalProduct / rate +
           totalShipping / rate
         ) +
@@ -2853,8 +2760,11 @@ function generateQuote() {
 
     } else {
 
+      /*
+        外送商品換算後無條件進位
+      */
       finalNTD =
-        Math.round(
+        Math.ceil(
           totalProduct / rate
         ) +
         totalFeeNTD;
@@ -2901,13 +2811,7 @@ function generateQuote() {
 
 
   /* =================================================
-     不同訂單提醒
-     
-     網站：
-     不論幾筆都顯示原本的提醒
-     
-     外送：
-     只有訂購 2 間以上餐廳才顯示
+     不同訂單提示
   ================================================= */
 
   if (currentMode === "website") {
@@ -2917,10 +2821,14 @@ function generateQuote() {
 
   } else {
 
+    /*
+      只有訂購 2 間以上餐廳才顯示
+    */
     const deliveryOrderCount =
       document.querySelectorAll(
         ".delivery-order"
       ).length;
+
 
     if (deliveryOrderCount >= 2) {
 
