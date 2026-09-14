@@ -1,5 +1,48 @@
-<!DOCTYPE html>
 
+和 Gemini 的對話
+後續跟小夥伴想要直接在看這個報價單點餐
+
+所以想新增欄位
+
+幾人用餐 (為了索取餐具)
+
+備註
+
+預計幾點下單 (預約訂單或是及時下單)
+
+這樣 幫我修改之後提供完整html
+
+Your HTML file is ready
+
+「HTML」圖示
+krtoyou_updated
+ HTML 
+修改與新增說明：
+基本資料區塊新增欄位：
+
+用餐人數（索取餐具）：輸入框（id="dinerCount"），例：2 人。
+
+預計下單時間：輸入框（id="orderTime"），例：即時下單 或 預約 18:30。
+
+訂單備註：文字區域（id="orderNote"），例：不要香菜、外送請放在門口等。
+
+報價文字自動帶入：
+
+產生報價文字時，若有填寫用餐人數、預計下單時間與備註，皆會自動格式化顯示在基本資料區域（例如：👥 用餐人數：2 人（索取餐具）、⏰ 預計下單時間：即時下單、📝 訂單備註：...）。
+
+清除重填功能同步更新：
+
+按下「清除重填」時，亦會將新新增的欄位一併清空。
+
+完整可直接運行的 .html 檔案已為您生成完畢，您點擊上方連結即可下載使用。
+
+
+
+
+Gemini 是 AI，有時可能會出錯。
+
+正在分析
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
@@ -1000,44 +1043,42 @@ textarea {
 
   <div class="mode-wrapper">
 
-```
-<div class="logo">KRTOYOU</div>
+    <div class="logo">KRTOYOU</div>
 
-<div class="subtitle">
-  韓國代訂報價系統
-</div>
+    <div class="subtitle">
+      韓國代訂報價系統
+    </div>
 
-<div class="mode-cards">
+    <div class="mode-cards">
 
-  <div class="mode-card" onclick="selectMode('website')">
+      <div class="mode-card" onclick="selectMode('website')">
 
-    <div class="mode-icon">🛍️</div>
+        <div class="mode-icon">🛍️</div>
 
-    <h2>韓國網站代訂</h2>
+        <h2>韓國網站代訂</h2>
 
-    <p>
-      Olive Young、MUSINSA、Coupang、29CM<br>
-      韓國品牌官網等
-    </p>
+        <p>
+          Olive Young、MUSINSA、Coupang、29CM<br>
+          韓國品牌官網等
+        </p>
 
-  </div>
+      </div>
 
 
-  <div class="mode-card" onclick="selectMode('delivery')">
+      <div class="mode-card" onclick="selectMode('delivery')">
 
-    <div class="mode-icon">🍗</div>
+        <div class="mode-icon">🍗</div>
 
-    <h2>韓國食物外送代訂</h2>
+        <h2>韓國食物外送代訂</h2>
 
-    <p>
-      배달의민족、Coupang Eats、요기요<br>
-      韓國餐廳外送
-    </p>
+        <p>
+          배달의민족、Coupang Eats、요기요<br>
+          韓國餐廳外送
+        </p>
 
-  </div>
+      </div>
 
-</div>
-```
+    </div>
 
   </div>
 
@@ -1049,137 +1090,171 @@ textarea {
 
   <div class="top-header">
 
-```
-<h1 id="pageTitle">KRTOYOU</h1>
+    <h1 id="pageTitle">KRTOYOU</h1>
 
-<button class="back-btn" onclick="goBack()">
-  ← 重新選擇
-</button>
-```
+    <button class="back-btn" onclick="goBack()">
+      ← 重新選擇
+    </button>
 
   </div>
 
   <div class="card">
 
-```
-<div class="card-title">
-  📋 基本資料
-</div>
+    <div class="card-title">
+      📋 基本資料
+    </div>
 
-<div class="grid">
+    <div class="grid">
 
-  <div class="field">
+      <div class="field">
 
-    <label>訂單日期</label>
+        <label>訂單日期</label>
 
-    <input
-      type="date"
-      id="orderDate"
-    >
+        <input
+          type="date"
+          id="orderDate"
+        >
 
-  </div>
-
-
-  <div class="field">
-
-    <label>訂單編號</label>
-
-    <input
-      type="text"
-      id="orderNumber"
-      placeholder="例如：20260912-001"
-    >
-
-  </div>
+      </div>
 
 
-  <div class="field">
+      <div class="field">
 
-    <label>客戶名稱</label>
+        <label>訂單編號</label>
 
-    <input
-      type="text"
-      id="customerName"
-      placeholder="請輸入客戶名稱"
-    >
+        <input
+          type="text"
+          id="orderNumber"
+          placeholder="例如：20260912-001"
+        >
 
-  </div>
-
-
-  <div class="field">
-
-    <label>結算匯率（₩ / NT$1）</label>
-
-    <input
-      type="number"
-      id="exchangeRate"
-      value="40"
-      min="1"
-      inputmode="decimal"
-    >
-
-  </div>
+      </div>
 
 
-  <div class="field full">
+      <div class="field">
 
-    <label>配送／收貨地址</label>
+        <label>客戶名稱</label>
 
-    <textarea
-      id="address"
-      placeholder="請輸入韓國配送地址"
-    ></textarea>
+        <input
+          type="text"
+          id="customerName"
+          placeholder="請輸入客戶名稱"
+        >
 
-  </div>
+      </div>
 
-</div>
-```
+
+      <div class="field">
+
+        <label>結算匯率（₩ / NT$1）</label>
+
+        <input
+          type="number"
+          id="exchangeRate"
+          value="40"
+          min="1"
+          inputmode="decimal"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>用餐人數（索取餐具）</label>
+
+        <input
+          type="number"
+          id="dinerCount"
+          placeholder="例如：2 人"
+          min="1"
+          inputmode="numeric"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>預計下單時間</label>
+
+        <input
+          type="text"
+          id="orderTime"
+          placeholder="例如：即時下單 / 預約 18:30"
+        >
+
+      </div>
+
+
+      <div class="field full">
+
+        <label>配送／收貨地址</label>
+
+        <textarea
+          id="address"
+          placeholder="請輸入韓國配送地址"
+        ></textarea>
+
+      </div>
+
+
+      <div class="field full">
+
+        <label>訂單備註</label>
+
+        <textarea
+          id="orderNote"
+          placeholder="例如：不要香菜、外送請放在門口等"
+        ></textarea>
+
+      </div>
+
+    </div>
 
   </div>
 
   <div class="card">
 
-```
-<div class="card-title">
-  💳 付款方式
-</div>
+    <div class="card-title">
+      💳 付款方式
+    </div>
 
-<div class="payment-options">
+    <div class="payment-options">
 
-  <div class="payment-option">
+      <div class="payment-option">
 
-    <input
-      type="radio"
-      name="payment"
-      id="payNTD"
-      value="NTD"
-      checked
-    >
+        <input
+          type="radio"
+          name="payment"
+          id="payNTD"
+          value="NTD"
+          checked
+        >
 
-    <label for="payNTD">
-      🇹🇼 台幣付款
-    </label>
+        <label for="payNTD">
+          🇹🇼 台幣付款
+        </label>
 
-  </div>
+      </div>
 
 
-  <div class="payment-option">
+      <div class="payment-option">
 
-    <input
-      type="radio"
-      name="payment"
-      id="payKRW"
-      value="KRW"
-    >
+        <input
+          type="radio"
+          name="payment"
+          id="payKRW"
+          value="KRW"
+        >
 
-    <label for="payKRW">
-      🇰🇷 韓元付款
-    </label>
+        <label for="payKRW">
+          🇰🇷 韓元付款
+        </label>
 
-  </div>
+      </div>
 
-</div>
-```
+    </div>
 
   </div>
 
@@ -1188,92 +1263,90 @@ textarea {
     style="display:none;"
   >
 
-```
-<div class="card">
+    <div class="card">
 
-  <div class="card-title">
-    🛍️ 韓國網站代訂
-  </div>
-
-
-  <div class="notice">
-
-    <strong>🇰🇷 韓國網站代訂服務費</strong>
+      <div class="card-title">
+        🛍️ 韓國網站代訂
+      </div>
 
 
-    <div class="fee-table-wrapper">
+      <div class="notice">
 
-      <table class="fee-table">
-
-        <thead>
-
-          <tr>
-            <th>商品金額</th>
-            <th>台幣服務費</th>
-            <th>韓元服務費</th>
-          </tr>
-
-        </thead>
+        <strong>🇰🇷 韓國網站代訂服務費</strong>
 
 
-        <tbody>
+        <div class="fee-table-wrapper">
 
-          <tr>
-            <td>₩50,000 以下</td>
-            <td>NT$100</td>
-            <td>₩4,500</td>
-          </tr>
+          <table class="fee-table">
 
-          <tr>
-            <td>₩50,001～₩100,000</td>
-            <td>NT$150</td>
-            <td>₩6,500</td>
-          </tr>
+            <thead>
 
-          <tr>
-            <td>₩100,001～₩200,000</td>
-            <td>NT$250</td>
-            <td>₩10,500</td>
-          </tr>
+              <tr>
+                <th>商品金額</th>
+                <th>台幣服務費</th>
+                <th>韓元服務費</th>
+              </tr>
 
-          <tr>
-            <td>₩200,001～₩300,000</td>
-            <td>NT$300</td>
-            <td>₩13,000</td>
-          </tr>
+            </thead>
 
-        </tbody>
 
-      </table>
+            <tbody>
+
+              <tr>
+                <td>₩50,000 以下</td>
+                <td>NT$100</td>
+                <td>₩4,500</td>
+              </tr>
+
+              <tr>
+                <td>₩50,001～₩100,000</td>
+                <td>NT$150</td>
+                <td>₩6,500</td>
+              </tr>
+
+              <tr>
+                <td>₩100,001～₩200,000</td>
+                <td>NT$250</td>
+                <td>₩10,500</td>
+              </tr>
+
+              <tr>
+                <td>₩200,001～₩300,000</td>
+                <td>NT$300</td>
+                <td>₩13,000</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+        <br>
+
+        ※ 商品費用及韓國境內運費另計<br>
+        ※ 商品費用換算為台幣時，將依當日匯率計算後提供報價<br>
+        ※ 不同網站／不同結帳訂單分開計算<br>
+        ※ 單筆訂單最高 ₩300,000<br>
+        ※ 超過單筆訂單上限，需事前確認是否承接<br>
+        ※ 不包含集運運回服務，請自行提供韓國集運地址<br>
+        ※ 特殊商品、人工聯繫、訂單修改等服務另行報價
+
+      </div>
+
+
+      <div id="websiteOrders"></div>
+
+
+      <button
+        class="add-order-btn"
+        onclick="addWebsiteOrder()"
+      >
+        ＋ 新增網站訂單
+      </button>
 
     </div>
-
-
-    <br>
-
-    ※ 商品費用及韓國境內運費另計<br>
-    ※ 商品費用換算為台幣時，將依當日匯率計算後提供報價<br>
-    ※ 不同網站／不同結帳訂單分開計算<br>
-    ※ 單筆訂單最高 ₩300,000<br>
-    ※ 超過單筆訂單上限，需事前確認是否承接<br>
-    ※ 不包含集運運回服務，請自行提供韓國集運地址<br>
-    ※ 特殊商品、人工聯繫、訂單修改等服務另行報價
-
-  </div>
-
-
-  <div id="websiteOrders"></div>
-
-
-  <button
-    class="add-order-btn"
-    onclick="addWebsiteOrder()"
-  >
-    ＋ 新增網站訂單
-  </button>
-
-</div>
-```
 
   </div>
 
@@ -1282,120 +1355,116 @@ textarea {
     style="display:none;"
   >
 
-```
-<div class="card">
+    <div class="card">
 
-  <div class="card-title">
-    🍗 韓國食物外送代訂
-  </div>
-
-
-  <div id="deliveryOrders"></div>
+      <div class="card-title">
+        🍗 韓國食物外送代訂
+      </div>
 
 
-  <button
-    class="add-order-btn"
-    onclick="addDeliveryOrder()"
-  >
-    ＋ 新增餐廳
-  </button>
+      <div id="deliveryOrders"></div>
 
-</div>
-```
+
+      <button
+        class="add-order-btn"
+        onclick="addDeliveryOrder()"
+      >
+        ＋ 新增餐廳
+      </button>
+
+    </div>
 
   </div>
 
   <div class="card">
 
-```
-<div class="card-title">
-  🧾 報價預覽
-</div>
+    <div class="card-title">
+      🧾 報價預覽
+    </div>
 
 
-<div class="summary">
+    <div class="summary">
 
-  <div class="summary-line">
+      <div class="summary-line">
 
-    <span>商品金額</span>
+        <span>商品金額</span>
 
-    <strong id="summaryProduct">
-      ₩0
-    </strong>
+        <strong id="summaryProduct">
+          ₩0
+        </strong>
 
-  </div>
-
-
-  <div class="summary-line">
-
-    <span>韓國境內運費</span>
-
-    <strong id="summaryShipping">
-      ₩0
-    </strong>
-
-  </div>
+      </div>
 
 
-  <div class="summary-line">
+      <div class="summary-line">
 
-    <span>代訂服務費</span>
+        <span>韓國境內運費</span>
 
-    <strong id="summaryFee">
-      ₩0
-    </strong>
+        <strong id="summaryShipping">
+          ₩0
+        </strong>
 
-  </div>
-
-
-  <div class="summary-line summary-total">
-
-    <span>應付總金額</span>
-
-    <strong id="summaryTotal">
-      NT$0
-    </strong>
-
-  </div>
-
-</div>
+      </div>
 
 
-<div class="action-buttons">
+      <div class="summary-line">
 
-  <button
-    class="primary-btn"
-    onclick="generateQuote()"
-  >
-    產生報價文字
-  </button>
+        <span>代訂服務費</span>
 
+        <strong id="summaryFee">
+          ₩0
+        </strong>
 
-  <button
-    class="secondary-btn"
-    onclick="clearAll()"
-  >
-    清除重填
-  </button>
-
-</div>
+      </div>
 
 
-<div
-  id="quoteOutput"
-  style="display:none;"
-></div>
+      <div class="summary-line summary-total">
+
+        <span>應付總金額</span>
+
+        <strong id="summaryTotal">
+          NT$0
+        </strong>
+
+      </div>
+
+    </div>
 
 
-<button
-  id="copyBtn"
-  class="primary-btn"
-  style="display:none; margin-top:10px;"
-  onclick="copyQuote()"
->
-  📋 複製報價
-</button>
-```
+    <div class="action-buttons">
+
+      <button
+        class="primary-btn"
+        onclick="generateQuote()"
+      >
+        產生報價文字
+      </button>
+
+
+      <button
+        class="secondary-btn"
+        onclick="clearAll()"
+      >
+        清除重填
+      </button>
+
+    </div>
+
+
+    <div
+      id="quoteOutput"
+      style="display:none;"
+    ></div>
+
+
+    <button
+      id="copyBtn"
+      class="primary-btn"
+      style="display:none; margin-top:10px;"
+      onclick="copyQuote()"
+    >
+      📋 複製報價
+    </button>
 
   </div>
 
@@ -2326,10 +2395,26 @@ function generateQuote() {
     "未填寫";
 
 
+  const dinerCount =
+    document.getElementById("dinerCount")
+      .value;
+
+
+  const orderTime =
+    document.getElementById("orderTime")
+      .value ||
+    "未填寫";
+
+
   const address =
     document.getElementById("address")
       .value ||
     "未填寫";
+
+
+  const orderNote =
+    document.getElementById("orderNote")
+      .value;
 
 
   const rate =
@@ -2349,35 +2434,75 @@ function generateQuote() {
 
 
   output +=
-    `🩷 謝謝您選擇 KRTOYOU 的代訂服務！\n\n`;
+    `🩷 謝謝您選擇 KRTOYOU 的代訂服務！
+
+`;
 
 
   output +=
-    `以下為本次訂購的❗️報價明細❗️，請確認訂單內容、配送地址及金額無誤後，再進行匯款。\n\n`;
+    `以下為本次訂購的❗️報價明細❗️，請確認訂單內容、配送地址及金額無誤後，再進行匯款。
+
+`;
 
 
   output +=
-    `━━━━━━━━━━━━━━\n\n`;
+    `━━━━━━━━━━━━━━
+
+`;
 
 
   output +=
-    `📅 訂單日期：${date}\n`;
+    `📅 訂單日期：${date}
+`;
 
 
   output +=
-    `🧾 訂單編號：${orderNumber}\n`;
+    `🧾 訂單編號：${orderNumber}
+`;
 
 
   output +=
-    `👤 客戶：${customer}\n\n`;
+    `👤 客戶：${customer}
+`;
+
+
+  if (dinerCount) {
+
+    output +=
+      `👥 用餐人數：${dinerCount} 人（索取餐具）
+`;
+
+  }
 
 
   output +=
-    `🏠 配送／收貨地址\n${address}\n\n`;
+    `⏰ 預計下單時間：${orderTime}
+
+`;
 
 
   output +=
-    `━━━━━━━━━━━━━━\n\n`;
+    `🏠 配送／收貨地址
+${address}
+
+`;
+
+
+  if (orderNote) {
+
+    output +=
+      `📝 訂單備註
+${orderNote}
+
+`;
+
+  }
+
+
+  output +=
+    `━━━━━━━━━━━━━━
+
+`;
 
 
   let totalProduct = 0;
@@ -2435,7 +2560,9 @@ function generateQuote() {
 
 
       output +=
-        `🛍️ ${name}\n\n`;
+        `🛍️ ${name}
+
+`;
 
 
       card
@@ -2482,7 +2609,8 @@ function generateQuote() {
 
 
           output +=
-            ` 🇰🇷 ₩${itemTotal.toLocaleString()}\n`;
+            ` 🇰🇷 ₩${itemTotal.toLocaleString()}
+`;
 
         });
 
@@ -2490,19 +2618,24 @@ function generateQuote() {
       if (discount > 0) {
 
         output +=
-          `\n🎟️ 優惠／折扣：-₩${discount.toLocaleString()}\n`;
+          `
+🎟️ 優惠／折扣：-₩${discount.toLocaleString()}
+`;
 
       }
 
 
       output +=
-        `\n🇰🇷 商品實付金額：₩${product.toLocaleString()}\n`;
+        `
+🇰🇷 商品實付金額：₩${product.toLocaleString()}
+`;
 
 
       if (shipping > 0) {
 
         output +=
-          `🚚 韓國境內運費：₩${shipping.toLocaleString()}\n`;
+          `🚚 韓國境內運費：₩${shipping.toLocaleString()}
+`;
 
       }
 
@@ -2510,7 +2643,9 @@ function generateQuote() {
       if (fee.ntd === null) {
 
         output +=
-          `⚠️ 本筆商品金額超過 ₩300,000，需事前確認是否承接。\n\n`;
+          `⚠️ 本筆商品金額超過 ₩300,000，需事前確認是否承接。
+
+`;
 
       } else {
 
@@ -2527,23 +2662,27 @@ function generateQuote() {
         if (payment === "NTD") {
 
           output +=
-            `🇹🇼 商品＋運費換算：約 NT$${converted.toLocaleString()}\n`;
+            `🇹🇼 商品＋運費換算：約 NT$${converted.toLocaleString()}
+`;
 
 
           output +=
-            `🧾 代訂服務費：NT$${fee.ntd.toLocaleString()}\n`;
+            `🧾 代訂服務費：NT$${fee.ntd.toLocaleString()}
+`;
 
 
           output +=
             `💰 本筆小計：NT$${(
               converted +
               fee.ntd
-            ).toLocaleString()}\n`;
+            ).toLocaleString()}
+`;
 
         } else {
 
           output +=
-            `🧾 代訂服務費：₩${fee.krw.toLocaleString()}\n`;
+            `🧾 代訂服務費：₩${fee.krw.toLocaleString()}
+`;
 
 
           output +=
@@ -2551,7 +2690,8 @@ function generateQuote() {
               product +
               shipping +
               fee.krw
-            ).toLocaleString()}\n`;
+            ).toLocaleString()}
+`;
 
         }
 
@@ -2559,7 +2699,10 @@ function generateQuote() {
 
 
       output +=
-        `\n━━━━━━━━━━━━━━\n\n`;
+        `
+━━━━━━━━━━━━━━
+
+`;
 
 
       totalProduct += product;
@@ -2616,7 +2759,9 @@ function generateQuote() {
 
 
       output +=
-        `🍗 ${name}\n\n`;
+        `🍗 ${name}
+
+`;
 
 
       card
@@ -2663,7 +2808,8 @@ function generateQuote() {
 
 
           output +=
-            ` 🇰🇷 ₩${itemTotal.toLocaleString()}\n`;
+            ` 🇰🇷 ₩${itemTotal.toLocaleString()}
+`;
 
         });
 
@@ -2671,13 +2817,17 @@ function generateQuote() {
       if (discount > 0) {
 
         output +=
-          `\n🎟️ 優惠券／折扣：-₩${discount.toLocaleString()}\n`;
+          `
+🎟️ 優惠券／折扣：-₩${discount.toLocaleString()}
+`;
 
       }
 
 
       output +=
-        `\n🇰🇷 商品實付金額：₩${product.toLocaleString()}\n`;
+        `
+🇰🇷 商品實付金額：₩${product.toLocaleString()}
+`;
 
 
       /*
@@ -2692,36 +2842,44 @@ function generateQuote() {
       if (payment === "NTD") {
 
         output +=
-          `🇹🇼 換算金額：約 NT$${converted.toLocaleString()}\n`;
+          `🇹🇼 換算金額：約 NT$${converted.toLocaleString()}
+`;
 
 
         output +=
-          `🧾 代訂服務費：NT$${fee.ntd.toLocaleString()}\n`;
+          `🧾 代訂服務費：NT$${fee.ntd.toLocaleString()}
+`;
 
 
         output +=
           `💰 本店小計：NT$${(
             converted +
             fee.ntd
-          ).toLocaleString()}\n`;
+          ).toLocaleString()}
+`;
 
       } else {
 
         output +=
-          `🧾 代訂服務費：₩${fee.krw.toLocaleString()}\n`;
+          `🧾 代訂服務費：₩${fee.krw.toLocaleString()}
+`;
 
 
         output +=
           `💰 本店小計：₩${(
             product +
             fee.krw
-          ).toLocaleString()}\n`;
+          ).toLocaleString()}
+`;
 
       }
 
 
       output +=
-        `\n━━━━━━━━━━━━━━\n\n`;
+        `
+━━━━━━━━━━━━━━
+
+`;
 
 
       totalProduct += product;
@@ -2773,7 +2931,8 @@ function generateQuote() {
 
 
     output +=
-      `💰 本次應付總金額：NT$${finalNTD.toLocaleString()}\n`;
+      `💰 本次應付總金額：NT$${finalNTD.toLocaleString()}
+`;
 
 
   } else {
@@ -2785,21 +2944,29 @@ function generateQuote() {
 
 
     output +=
-      `💰 本次應付總金額：₩${finalKRW.toLocaleString()}\n`;
+      `💰 本次應付總金額：₩${finalKRW.toLocaleString()}
+`;
 
   }
 
 
   output +=
-    `\n━━━━━━━━━━━━━━\n\n`;
+    `
+━━━━━━━━━━━━━━
+
+`;
 
 
   output +=
-    `📌 本次 KRTOYOU 結算匯率\n\n`;
+    `📌 本次 KRTOYOU 結算匯率
+
+`;
 
 
   output +=
-    `🇰🇷 ₩${rate.toLocaleString()} ＝ 🇹🇼 NT$1\n\n`;
+    `🇰🇷 ₩${rate.toLocaleString()} ＝ 🇹🇼 NT$1
+
+`;
 
 
   output +=
@@ -2807,7 +2974,11 @@ function generateQuote() {
 
 
   output +=
-    `\n\n━━━━━━━━━━━━━━\n\n`;
+    `
+
+━━━━━━━━━━━━━━
+
+`;
 
 
   /* =================================================
@@ -2817,7 +2988,9 @@ function generateQuote() {
   if (currentMode === "website") {
 
     output +=
-      `📍 不同網站／不同結帳訂單，代訂服務費分別計算。\n\n`;
+      `📍 不同網站／不同結帳訂單，代訂服務費分別計算。
+
+`;
 
   } else {
 
@@ -2833,7 +3006,9 @@ function generateQuote() {
     if (deliveryOrderCount >= 2) {
 
       output +=
-        `📍 本次為不同店家訂購，各店家將分別計算代訂服務費。\n\n`;
+        `📍 本次為不同店家訂購，各店家將分別計算代訂服務費。
+
+`;
 
     }
 
@@ -2841,27 +3016,35 @@ function generateQuote() {
 
 
   output +=
-    `⚠️ 訂購流程\n`;
+    `⚠️ 訂購流程
+`;
 
 
   output +=
-    `① 確認以上訂單內容及配送地址\n`;
+    `① 確認以上訂單內容及配送地址
+`;
 
 
   output +=
-    `② 完成匯款\n`;
+    `② 完成匯款
+`;
 
 
   output +=
-    `③ KRTOYOU 確認收到款項後，才會協助下單\n\n`;
+    `③ KRTOYOU 確認收到款項後，才會協助下單
+
+`;
 
 
   output +=
-    `❗️匯款完成前皆尚未下單，請確認內容無誤後再進行匯款❗️\n\n`;
+    `❗️匯款完成前皆尚未下單，請確認內容無誤後再進行匯款❗️
+
+`;
 
 
   output +=
-    `謝謝您的支持 🩷\n`;
+    `謝謝您的支持 🩷
+`;
 
 
   output +=
@@ -2977,7 +3160,22 @@ function clearAll() {
 
 
   document.getElementById(
+    "dinerCount"
+  ).value = "";
+
+
+  document.getElementById(
+    "orderTime"
+  ).value = "";
+
+
+  document.getElementById(
     "address"
+  ).value = "";
+
+
+  document.getElementById(
+    "orderNote"
   ).value = "";
 
 
