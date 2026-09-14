@@ -1115,34 +1115,6 @@ textarea {
       </div>
 
 
-      <div class="field">
-
-        <label>用餐人數（索取餐具）</label>
-
-        <input
-          type="number"
-          id="dinerCount"
-          placeholder="例如：2 人"
-          min="1"
-          inputmode="numeric"
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>預計下單時間</label>
-
-        <input
-          type="text"
-          id="orderTime"
-          placeholder="例如：即時下單 / 預約 18:30"
-        >
-
-      </div>
-
-
       <div class="field full">
 
         <label>配送／收貨地址</label>
@@ -1150,18 +1122,6 @@ textarea {
         <textarea
           id="address"
           placeholder="請輸入韓國配送地址"
-        ></textarea>
-
-      </div>
-
-
-      <div class="field full">
-
-        <label>訂單備註</label>
-
-        <textarea
-          id="orderNote"
-          placeholder="例如：不要香菜、外送請放在門口等"
         ></textarea>
 
       </div>
@@ -1692,6 +1652,36 @@ function addWebsiteOrder() {
 
       </div>
 
+
+      <div class="field">
+
+        <label>
+          預計下單時間
+        </label>
+
+        <input
+          type="text"
+          class="order-time"
+          placeholder="例如：即時下單 / 預約 18:30"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          備註
+        </label>
+
+        <input
+          type="text"
+          class="order-note"
+          placeholder="例如：指定顏色、尺寸等"
+        >
+
+      </div>
+
     </div>
 
 
@@ -1804,6 +1794,52 @@ function addDeliveryOrder() {
           inputmode="numeric"
           oninput="updateSummary()"
         >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          幾人用餐（索取餐具）
+        </label>
+
+        <input
+          type="number"
+          class="diner-count"
+          placeholder="例如：2"
+          min="1"
+          inputmode="numeric"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          預計下單時間
+        </label>
+
+        <input
+          type="text"
+          class="order-time"
+          placeholder="例如：即時下單 / 預約 18:30"
+        >
+
+      </div>
+
+
+      <div class="field full">
+
+        <label>
+          備註
+        </label>
+
+        <textarea
+          class="order-note"
+          placeholder="例如：不要香菜、少冰、外送請放在門口等"
+        ></textarea>
 
       </div>
 
@@ -2351,26 +2387,10 @@ function generateQuote() {
     "未填寫";
 
 
-  const dinerCount =
-    document.getElementById("dinerCount")
-      .value;
-
-
-  const orderTime =
-    document.getElementById("orderTime")
-      .value ||
-    "未填寫";
-
-
   const address =
     document.getElementById("address")
       .value ||
     "未填寫";
-
-
-  const orderNote =
-    document.getElementById("orderNote")
-      .value;
 
 
   const rate =
@@ -2419,20 +2439,6 @@ function generateQuote() {
 
   output +=
     `👤 客戶：${customer}
-`;
-
-
-  if (dinerCount) {
-
-    output +=
-      `👥 用餐人數：${dinerCount} 人（索取餐具）
-`;
-
-  }
-
-
-  output +=
-    `⏰ 預計下單時間：${orderTime}
 
 `;
 
@@ -2442,17 +2448,6 @@ function generateQuote() {
 ${address}
 
 `;
-
-
-  if (orderNote) {
-
-    output +=
-      `📝 訂單備註
-${orderNote}
-
-`;
-
-  }
 
 
   output +=
@@ -2509,6 +2504,18 @@ ${orderNote}
             ".discount"
           )?.value
         ) || 0;
+
+
+      const orderTime =
+        card.querySelector(
+          ".order-time"
+        )?.value;
+
+
+      const orderNote =
+        card.querySelector(
+          ".order-note"
+        )?.value;
 
 
       const fee =
@@ -2596,6 +2603,24 @@ ${orderNote}
       }
 
 
+      if (orderTime) {
+
+        output +=
+          `⏰ 預計下單時間：${orderTime}
+`;
+
+      }
+
+
+      if (orderNote) {
+
+        output +=
+          `📝 備註：${orderNote}
+`;
+
+      }
+
+
       if (fee.ntd === null) {
 
         output +=
@@ -2606,7 +2631,7 @@ ${orderNote}
       } else {
 
         /*
-          台幣換算改為無條件進位
+          台幣換算無條件進位
         */
         const converted =
           Math.ceil(
@@ -2710,6 +2735,24 @@ ${orderNote}
         ) || 0;
 
 
+      const dinerCount =
+        card.querySelector(
+          ".diner-count"
+        )?.value;
+
+
+      const orderTime =
+        card.querySelector(
+          ".order-time"
+        )?.value;
+
+
+      const orderNote =
+        card.querySelector(
+          ".order-note"
+        )?.value;
+
+
       const fee =
         getDeliveryFee(product);
 
@@ -2786,8 +2829,35 @@ ${orderNote}
 `;
 
 
+      if (dinerCount) {
+
+        output +=
+          `👥 用餐人數：${dinerCount} 人（索取餐具）
+`;
+
+      }
+
+
+      if (orderTime) {
+
+        output +=
+          `⏰ 預計下單時間：${orderTime}
+`;
+
+      }
+
+
+      if (orderNote) {
+
+        output +=
+          `📝 備註：${orderNote}
+`;
+
+      }
+
+
       /*
-        台幣換算改為無條件進位
+        台幣換算無條件進位
       */
       const converted =
         Math.ceil(
@@ -3116,22 +3186,7 @@ function clearAll() {
 
 
   document.getElementById(
-    "dinerCount"
-  ).value = "";
-
-
-  document.getElementById(
-    "orderTime"
-  ).value = "";
-
-
-  document.getElementById(
     "address"
-  ).value = "";
-
-
-  document.getElementById(
-    "orderNote"
   ).value = "";
 
 
