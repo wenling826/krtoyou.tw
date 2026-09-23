@@ -233,6 +233,24 @@ textarea {
   min-height: 80px;
 }
 
+.order-number-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.order-number-prefix {
+  flex-shrink: 0;
+  font-weight: 600;
+  color: #555;
+  white-space: nowrap;
+}
+
+.order-number-wrap input {
+  flex: 1;
+  min-width: 0;
+}
+
 
 /* =====================================================
    Payment
@@ -309,7 +327,7 @@ textarea {
 
 
 /* =====================================================
-   商品列 - 桌機
+   商品列
 ===================================================== */
 
 .items {
@@ -331,7 +349,6 @@ textarea {
 
   width: 100%;
   min-width: 0;
-
   margin-bottom: 8px;
 }
 
@@ -376,7 +393,7 @@ textarea {
 
 
 /* =====================================================
-   Website Notice
+   Notice
 ===================================================== */
 
 .notice {
@@ -515,7 +532,7 @@ textarea {
 
 
 /* =====================================================
-   iPhone / Mobile
+   Mobile
 ===================================================== */
 
 @media (max-width: 700px) {
@@ -658,6 +675,10 @@ textarea {
     min-height: 90px;
   }
 
+  .order-number-prefix {
+    font-size: 14px;
+  }
+
   .payment-options {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -742,9 +763,6 @@ textarea {
   .item-row .item-name {
     grid-column: 1;
     grid-row: 1;
-
-    width: 100%;
-    min-width: 0;
   }
 
   .item-row .delete-item {
@@ -757,25 +775,16 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    padding: 0;
   }
 
   .item-row .item-price {
     grid-column: 1;
     grid-row: 2;
-
-    width: 100%;
-    min-width: 0;
   }
 
   .item-row .item-qty {
     grid-column: 2;
     grid-row: 2;
-
-    width: 100%;
-    min-width: 0;
-
     text-align: center;
   }
 
@@ -784,10 +793,7 @@ textarea {
     grid-row: 3;
 
     width: 100%;
-    min-width: 0;
-
     text-align: right;
-
     padding-top: 2px;
 
     font-size: 13px;
@@ -800,15 +806,11 @@ textarea {
   .add-item-btn,
   .add-order-btn {
     display: block;
-
     width: 100%;
     max-width: 100%;
     min-width: 0;
-
     padding: 11px;
-
     margin-top: 5px;
-
     text-align: center;
   }
 
@@ -816,35 +818,26 @@ textarea {
     width: 100%;
     max-width: 100%;
     min-width: 0;
-
     padding: 12px;
-
     font-size: 12px;
     line-height: 1.7;
-
     overflow: hidden;
   }
 
   .fee-table-wrapper {
     display: block;
-
     width: 100%;
     max-width: 100%;
-
     overflow-x: auto;
     overflow-y: hidden;
-
     -webkit-overflow-scrolling: touch;
-
     margin-top: 10px;
-
     border-radius: 8px;
   }
 
   .fee-table {
     width: max-content;
     min-width: 430px;
-
     font-size: 12px;
   }
 
@@ -858,7 +851,6 @@ textarea {
     width: 100%;
     max-width: 100%;
     min-width: 0;
-
     font-size: 13px;
     overflow-wrap: anywhere;
     word-break: break-word;
@@ -874,20 +866,13 @@ textarea {
   .summary-line {
     width: 100%;
     min-width: 0;
-
     font-size: 14px;
-  }
-
-  .summary-line span {
-    min-width: 0;
   }
 
   .summary-line strong {
     min-width: 0;
     max-width: 60%;
-
     text-align: right;
-
     overflow-wrap: anywhere;
   }
 
@@ -911,15 +896,11 @@ textarea {
     width: 100%;
     max-width: 100%;
     min-width: 0;
-
     padding: 14px;
-
     font-size: 13px;
     line-height: 1.65;
-
     overflow-wrap: anywhere;
     word-break: break-word;
-
     white-space: pre-wrap;
   }
 
@@ -1023,7 +1004,7 @@ textarea {
 
       <div class="mode-card" onclick="selectMode('delivery')">
 
-        <div class="mode-icon">🍗</div>
+        <div class="mode-icon">🍽️</div>
 
         <h2>韓國食物外送代訂</h2>
 
@@ -1040,6 +1021,7 @@ textarea {
 
 </section>
 
+
 <section id="quoteSystem" style="display:none;">
 
 <div class="container">
@@ -1053,6 +1035,7 @@ textarea {
     </button>
 
   </div>
+
 
   <div class="card">
 
@@ -1078,11 +1061,21 @@ textarea {
 
         <label>訂單編號</label>
 
-        <input
-          type="text"
-          id="orderNumber"
-          placeholder="例如：20260912-001"
-        >
+        <div class="order-number-wrap">
+
+          <span
+            id="orderDatePrefix"
+            class="order-number-prefix"
+          ></span>
+
+          <input
+            type="text"
+            id="orderNumber"
+            placeholder="001"
+            inputmode="numeric"
+          >
+
+        </div>
 
       </div>
 
@@ -1130,6 +1123,7 @@ textarea {
 
   </div>
 
+
   <div class="card">
 
     <div class="card-title">
@@ -1173,6 +1167,7 @@ textarea {
     </div>
 
   </div>
+
 
   <div
     id="websiteSection"
@@ -1266,6 +1261,7 @@ textarea {
 
   </div>
 
+
   <div
     id="deliverySection"
     style="display:none;"
@@ -1274,7 +1270,7 @@ textarea {
     <div class="card">
 
       <div class="card-title">
-        🍗 韓國食物外送代訂
+        🍽️ 韓國食物外送代訂
       </div>
 
 
@@ -1291,6 +1287,7 @@ textarea {
     </div>
 
   </div>
+
 
   <div class="card">
 
@@ -1386,6 +1383,7 @@ textarea {
 
 </div>
 
+
 <div class="mobile-total">
 
   <span>
@@ -1400,6 +1398,7 @@ textarea {
 
 </section>
 
+
 <script>
 
 /* =====================================================
@@ -1407,6 +1406,19 @@ textarea {
 ===================================================== */
 
 let currentMode = "";
+
+const DELIVERY_EMOJIS = [
+  "🍗",
+  "🍜",
+  "🍕",
+  "🍔",
+  "🍲",
+  "🍱",
+  "🍚",
+  "🥘",
+  "🥡",
+  "☕"
+];
 
 
 /* =====================================================
@@ -1418,11 +1430,8 @@ const PAYMENT_INFO = {
   NTD: `
 💳 台幣匯款資訊
 
-🏦 台新銀行（812）
-帳號：28881003712059
-
-或使用 Richart 直接轉帳：
-https://richart.tw/TSDIB_RichartWeb/RC04/RC040300?token=8B0B4F8B2B7893B4DC6FB4D553667015
+🏦 LINE Bank（824）
+帳號：111000615585
 `,
 
   KRW: `
@@ -1460,6 +1469,36 @@ function getToday() {
 
 document.getElementById("orderDate").value =
   getToday();
+
+
+/* =====================================================
+   訂單日期前綴
+===================================================== */
+
+function updateOrderDatePrefix() {
+
+  const date =
+    document.getElementById("orderDate")
+      .value
+      .replaceAll("-", "");
+
+  document.getElementById(
+    "orderDatePrefix"
+  ).innerText =
+    `${date}-`;
+
+}
+
+
+updateOrderDatePrefix();
+
+
+document
+  .getElementById("orderDate")
+  .addEventListener(
+    "change",
+    updateOrderDatePrefix
+  );
 
 
 /* =====================================================
@@ -1503,7 +1542,7 @@ function selectMode(mode) {
   } else {
 
     document.getElementById("pageTitle").innerText =
-      "🍗 韓國食物外送代訂報價";
+      "🍽️ 韓國食物外送代訂報價";
 
     document.getElementById("websiteSection")
       .style.display = "none";
@@ -1545,6 +1584,33 @@ function goBack() {
 
   document.getElementById("modeSelect")
     .style.display = "flex";
+
+}
+
+
+/* =====================================================
+   下單方式
+===================================================== */
+
+function handleOrderType(select) {
+
+  const card =
+    select.closest(".order-card");
+
+  const timeInput =
+    card.querySelector(".scheduled-time");
+
+
+  if (select.value === "scheduled") {
+
+    timeInput.style.display = "block";
+
+  } else {
+
+    timeInput.style.display = "none";
+    timeInput.value = "";
+
+  }
 
 }
 
@@ -1620,24 +1686,6 @@ function addWebsiteOrder() {
       <div class="field">
 
         <label>
-          優惠／折扣（₩）
-        </label>
-
-        <input
-          type="number"
-          class="discount"
-          value="0"
-          min="0"
-          inputmode="numeric"
-          oninput="updateSummary()"
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
           韓國境內運費（₩）
         </label>
 
@@ -1656,29 +1704,43 @@ function addWebsiteOrder() {
       <div class="field">
 
         <label>
-          預計下單時間
+          下單時間
         </label>
 
+        <select
+          class="order-type"
+          onchange="handleOrderType(this)"
+        >
+
+          <option value="instant">
+            即時下單
+          </option>
+
+          <option value="scheduled">
+            預約下單
+          </option>
+
+        </select>
+
         <input
-          type="text"
-          class="order-time"
-          placeholder="例如：即時下單 / 預約 18:30"
+          type="time"
+          class="scheduled-time"
+          style="display:none; margin-top:8px;"
         >
 
       </div>
 
 
-      <div class="field">
+      <div class="field full">
 
         <label>
           備註
         </label>
 
-        <input
-          type="text"
+        <textarea
           class="order-note"
-          placeholder="例如：指定顏色、尺寸等"
-        >
+          placeholder="例如：指定顏色、尺寸或其他下單需求"
+        ></textarea>
 
       </div>
 
@@ -1733,7 +1795,7 @@ function addDeliveryOrder() {
     <div class="order-header">
 
       <div class="order-title">
-        🍗 餐廳
+        🍽️ 餐廳
       </div>
 
       <button
@@ -1756,7 +1818,7 @@ function addDeliveryOrder() {
 
         <input
           class="restaurant-name"
-          placeholder="例如：puradak 炸雞"
+          placeholder="例如：PURADAK 炸雞"
         >
 
       </div>
@@ -1765,7 +1827,7 @@ function addDeliveryOrder() {
       <div class="field full">
 
         <label>
-          商品
+          餐點
         </label>
 
         <div class="items"></div>
@@ -1774,26 +1836,8 @@ function addDeliveryOrder() {
           class="add-item-btn"
           onclick="addItem(this)"
         >
-          ＋ 新增商品
+          ＋ 新增餐點
         </button>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          優惠券／折扣（₩）
-        </label>
-
-        <input
-          type="number"
-          class="discount"
-          value="0"
-          min="0"
-          inputmode="numeric"
-          oninput="updateSummary()"
-        >
 
       </div>
 
@@ -1818,13 +1862,28 @@ function addDeliveryOrder() {
       <div class="field">
 
         <label>
-          預計下單時間
+          下單時間
         </label>
 
+        <select
+          class="order-type"
+          onchange="handleOrderType(this)"
+        >
+
+          <option value="instant">
+            即時下單
+          </option>
+
+          <option value="scheduled">
+            預約下單
+          </option>
+
+        </select>
+
         <input
-          type="text"
-          class="order-time"
-          placeholder="例如：即時下單 / 預約 18:30"
+          type="time"
+          class="scheduled-time"
+          style="display:none; margin-top:8px;"
         >
 
       </div>
@@ -1838,7 +1897,7 @@ function addDeliveryOrder() {
 
         <textarea
           class="order-note"
-          placeholder="例如：不要香菜、少冰、外送請放在門口等"
+          placeholder="例如：不要香菜、餐具需求、外送請放門口等"
         ></textarea>
 
       </div>
@@ -1897,7 +1956,7 @@ function addItem(button) {
 
     <input
       class="item-name"
-      placeholder="商品名稱"
+      placeholder="${currentMode === "delivery" ? "餐點名稱" : "商品名稱"}"
       oninput="updateSummary()"
     >
 
@@ -1984,7 +2043,7 @@ function removeOrder(button) {
 
 
 /* =====================================================
-   訂單編號
+   訂單重新編號
 ===================================================== */
 
 function renumberOrders() {
@@ -2010,8 +2069,15 @@ function renumberOrders() {
 
       } else {
 
+        const emoji =
+          DELIVERY_EMOJIS[
+            index % DELIVERY_EMOJIS.length
+          ];
+
+        card.dataset.emoji = emoji;
+
         title.innerText =
-          `🍗 餐廳 ${index + 1}`;
+          `${emoji} 餐廳 ${index + 1}`;
 
       }
 
@@ -2057,15 +2123,6 @@ function getProductTotal(card) {
         `小計 ₩${itemTotal.toLocaleString()}`;
 
     });
-
-
-  const discount =
-    Number(
-      card.querySelector(".discount")?.value
-    ) || 0;
-
-
-  total -= discount;
 
 
   return Math.max(total, 0);
@@ -2163,7 +2220,6 @@ function getDeliveryFee(productTotal) {
 
 /* =====================================================
    更新摘要
-   台幣換算：無條件進位 Math.ceil()
 ===================================================== */
 
 function updateSummary() {
@@ -2175,11 +2231,8 @@ function updateSummary() {
 
 
   let productTotal = 0;
-
   let shippingTotal = 0;
-
   let feeNTD = 0;
-
   let feeKRW = 0;
 
 
@@ -2200,7 +2253,6 @@ function updateSummary() {
 
 
         productTotal += product;
-
         shippingTotal += shipping;
 
 
@@ -2222,7 +2274,6 @@ function updateSummary() {
         } else {
 
           feeNTD += fee.ntd;
-
           feeKRW += fee.krw;
 
 
@@ -2252,7 +2303,6 @@ function updateSummary() {
 
 
         feeNTD += fee.ntd;
-
         feeKRW += fee.krw;
 
 
@@ -2277,7 +2327,6 @@ function updateSummary() {
 
 
   let totalNTD = 0;
-
   let totalKRW = 0;
 
 
@@ -2287,8 +2336,7 @@ function updateSummary() {
 
       totalNTD =
         Math.ceil(
-          productTotal / rate +
-          shippingTotal / rate
+          (productTotal + shippingTotal) / rate
         ) +
         feeNTD;
 
@@ -2364,6 +2412,38 @@ function updateSummary() {
 
 
 /* =====================================================
+   取得下單時間文字
+===================================================== */
+
+function getOrderTimeText(card) {
+
+  const orderType =
+    card.querySelector(
+      ".order-type"
+    )?.value || "instant";
+
+
+  const scheduledTime =
+    card.querySelector(
+      ".scheduled-time"
+    )?.value;
+
+
+  if (orderType === "scheduled") {
+
+    return scheduledTime
+      ? `預約下單 ${scheduledTime}`
+      : "預約下單（時間未填）";
+
+  }
+
+
+  return "即時下單";
+
+}
+
+
+/* =====================================================
    產生報價
 ===================================================== */
 
@@ -2375,10 +2455,20 @@ function generateQuote() {
       .replaceAll("-", "");
 
 
-  const orderNumber =
+  let orderSuffix =
     document.getElementById("orderNumber")
-      .value ||
-    `${date}-001`;
+      .value
+      .trim() || "001";
+
+
+  orderSuffix =
+    orderSuffix
+      .replace(`${date}-`, "")
+      .replace(/^-+/, "");
+
+
+  const orderNumber =
+    `${date}-${orderSuffix}`;
 
 
   const customer =
@@ -2457,11 +2547,8 @@ ${address}
 
 
   let totalProduct = 0;
-
   let totalShipping = 0;
-
   let totalFeeNTD = 0;
-
   let totalFeeKRW = 0;
 
 
@@ -2498,24 +2585,14 @@ ${address}
         ) || 0;
 
 
-      const discount =
-        Number(
-          card.querySelector(
-            ".discount"
-          )?.value
-        ) || 0;
-
-
       const orderTime =
-        card.querySelector(
-          ".order-time"
-        )?.value;
+        getOrderTimeText(card);
 
 
       const orderNote =
         card.querySelector(
           ".order-note"
-        )?.value;
+        )?.value.trim();
 
 
       const fee =
@@ -2578,19 +2655,9 @@ ${address}
         });
 
 
-      if (discount > 0) {
-
-        output +=
-          `
-🎟️ 優惠／折扣：-₩${discount.toLocaleString()}
-`;
-
-      }
-
-
       output +=
         `
-🇰🇷 商品實付金額：₩${product.toLocaleString()}
+🇰🇷 商品金額：₩${product.toLocaleString()}
 `;
 
 
@@ -2603,13 +2670,9 @@ ${address}
       }
 
 
-      if (orderTime) {
-
-        output +=
-          `⏰ 預計下單時間：${orderTime}
+      output +=
+        `⏰ 下單時間：${orderTime}
 `;
-
-      }
 
 
       if (orderNote) {
@@ -2630,13 +2693,9 @@ ${address}
 
       } else {
 
-        /*
-          台幣換算無條件進位
-        */
         const converted =
           Math.ceil(
-            product / rate +
-            shipping / rate
+            (product + shipping) / rate
           );
 
 
@@ -2687,14 +2746,12 @@ ${address}
 
 
       totalProduct += product;
-
       totalShipping += shipping;
 
 
       if (fee.ntd !== null) {
 
         totalFeeNTD += fee.ntd;
-
         totalFeeKRW += fee.krw;
 
       }
@@ -2727,14 +2784,6 @@ ${address}
         getProductTotal(card);
 
 
-      const discount =
-        Number(
-          card.querySelector(
-            ".discount"
-          )?.value
-        ) || 0;
-
-
       const dinerCount =
         card.querySelector(
           ".diner-count"
@@ -2742,23 +2791,25 @@ ${address}
 
 
       const orderTime =
-        card.querySelector(
-          ".order-time"
-        )?.value;
+        getOrderTimeText(card);
 
 
       const orderNote =
         card.querySelector(
           ".order-note"
-        )?.value;
+        )?.value.trim();
 
 
       const fee =
         getDeliveryFee(product);
 
 
+      const emoji =
+        card.dataset.emoji || "🍽️";
+
+
       output +=
-        `🍗 ${name}
+        `${emoji} ${name}
 
 `;
 
@@ -2771,7 +2822,7 @@ ${address}
             row.querySelector(
               ".item-name"
             ).value ||
-            "未填商品";
+            "未填餐點";
 
 
           const price =
@@ -2813,19 +2864,9 @@ ${address}
         });
 
 
-      if (discount > 0) {
-
-        output +=
-          `
-🎟️ 優惠券／折扣：-₩${discount.toLocaleString()}
-`;
-
-      }
-
-
       output +=
         `
-🇰🇷 商品實付金額：₩${product.toLocaleString()}
+🇰🇷 餐點金額：₩${product.toLocaleString()}
 `;
 
 
@@ -2838,13 +2879,9 @@ ${address}
       }
 
 
-      if (orderTime) {
-
-        output +=
-          `⏰ 預計下單時間：${orderTime}
+      output +=
+        `⏰ 下單時間：${orderTime}
 `;
-
-      }
 
 
       if (orderNote) {
@@ -2856,9 +2893,6 @@ ${address}
       }
 
 
-      /*
-        台幣換算無條件進位
-      */
       const converted =
         Math.ceil(
           product / rate
@@ -2909,9 +2943,7 @@ ${address}
 
 
       totalProduct += product;
-
       totalFeeNTD += fee.ntd;
-
       totalFeeKRW += fee.krw;
 
     });
@@ -2924,7 +2956,6 @@ ${address}
   ================================================= */
 
   let finalNTD = 0;
-
   let finalKRW = 0;
 
 
@@ -2932,21 +2963,14 @@ ${address}
 
     if (currentMode === "website") {
 
-      /*
-        商品＋運費換算後無條件進位
-      */
       finalNTD =
         Math.ceil(
-          totalProduct / rate +
-          totalShipping / rate
+          (totalProduct + totalShipping) / rate
         ) +
         totalFeeNTD;
 
     } else {
 
-      /*
-        外送商品換算後無條件進位
-      */
       finalNTD =
         Math.ceil(
           totalProduct / rate
@@ -3020,9 +3044,6 @@ ${address}
 
   } else {
 
-    /*
-      只有訂購 2 間以上餐廳才顯示
-    */
     const deliveryOrderCount =
       document.querySelectorAll(
         ".delivery-order"
@@ -3218,6 +3239,14 @@ function clearAll() {
   document.getElementById(
     "copyBtn"
   ).style.display = "none";
+
+
+  document.getElementById(
+    "orderDate"
+  ).value = getToday();
+
+
+  updateOrderDatePrefix();
 
 
   if (currentMode === "website") {
