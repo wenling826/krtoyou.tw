@@ -77,18 +77,20 @@
       <div class="card-title">🏠 外送地址</div>
       <div class="grid">
         <div class="field full"><label>完整韓文地址</label><textarea id="diAddress" placeholder="請貼上可直接輸入 배민 的完整韓文地址"></textarea><button class="secondary" style="width:auto" onclick="bringQuoteAddress()">從報價欄位帶入地址</button></div>
+        <div class="field"><label>住宿類型</label><select id="diStayType" onchange="updateDIOptions()"><option value="hotel">飯店／旅館</option><option value="airbnb">Airbnb／民宿</option></select></div>
         <div class="field"><label>領餐人姓名（選填）</label><input id="diRecipient" placeholder="例如：Chen Yingling"></div>
-        <div class="field"><label>房號（依放置方式填寫）</label><input id="diRoom" placeholder="輸入 2306 或 2306호皆可"></div>
+        <div class="field"><label>房號／門牌（依放置方式填寫）</label><input id="diRoom" placeholder="輸入 2306 或 2306호皆可"></div>
         <div class="field"><label>樓層（選填）</label><input id="diFloor" placeholder="輸入 20 或 20층皆可"></div>
-        <div class="field"><label>外送放置方式</label><select id="diDropoff" onchange="toggleDICustom()"><option value="front">放一樓櫃檯</option><option value="door">放房門口</option><option value="table">飯店外送餐點放置桌</option><option value="doorFront">放房門口；無法上樓請放一樓櫃檯</option><option value="custom">自行輸入</option></select></div>
+        <div class="field"><label>外送放置方式</label><select id="diDropoff" onchange="toggleDICustom()"></select></div>
         <div id="diCustomWrap" class="field full custom-wrap"><label>自訂韓文 요청사항</label><textarea id="diCustom" placeholder="請輸入或貼上韓文放置需求"></textarea></div>
         <div class="field full"><label>其他韓文備註（選填）</label><textarea id="diExtra" placeholder="例如：도착하시면 메시지를 보내 주세요."></textarea></div>
-        <div class="notice full" style="margin:0">所有放置方式都會固定加入「請務必拍照回傳，謝謝」。領餐人有填寫時，會在 요청사항 最後加上 `(수령자 : Name)`。</div>
+        <div class="notice full" style="margin:0">系統會依「飯店／Airbnb」顯示適合的放置方式，並使用較精簡的韓文避免 요청사항 過長。所有方式都會加入拍照要求；領餐人有填寫時，會在最後加上 `(수령자 : Name)`。</div>
       </div>
     </div>
     <div class="card">
       <div class="card-title">📝 產生結果</div>
       <div id="diOutput" class="output dark-output">填寫完成後，按下「產生外送資訊」。</div>
+      <div id="diCount" class="hint" style="margin-top:8px">요청사항：0 字</div>
       <div class="actions"><button class="primary" onclick="generateDeliveryInfo(true)">產生外送資訊</button><button class="secondary" onclick="copyDeliveryInfo()">📋 複製全部</button><button class="danger" onclick="clearDeliveryInfo()">清除</button></div>
     </div>
   </div>
@@ -109,7 +111,7 @@ function toast(text){const el=$("toast");el.textContent=text;el.classList.add("s
 function updatePrefix(){$("orderPrefix").textContent=$('orderDate').value.replaceAll("-","")+"-"}
 
 function openQuote(mode){currentMode=mode;showScreen("quoteScreen");$("quoteTitle").textContent=mode==="website"?"🛍️ 韓國網站代訂報價":"🍽️ 韓國食物外送代訂報價";$("websiteSection").style.display=mode==="website"?"block":"none";$("deliverySection").style.display=mode==="delivery"?"block":"none";if(mode==="website"&&!document.querySelector(".website-order"))addWebsiteOrder();if(mode==="delivery"&&!document.querySelector(".delivery-order"))addDeliveryOrder();renumber();updateSummary()}
-function openDeliveryInfo(){showScreen("deliveryInfoScreen")}
+function openDeliveryInfo(){updateDIOptions(true);showScreen("deliveryInfoScreen")}
 function timeFields(){return `<div class="field"><label>下單時間</label><select class="order-type" onchange="toggleTime(this)"><option value="instant">即時下單</option><option value="scheduled">預約下單</option></select><input type="time" class="scheduled-time" style="display:none;margin-top:7px"></div>`}
 function toggleTime(el){const t=el.closest(".order-card").querySelector(".scheduled-time");t.style.display=el.value==="scheduled"?"block":"none";if(el.value!=="scheduled")t.value=""}
 function itemBlock(label){return `<div class="field full"><label>${label}</label><div class="items"></div><button class="add-btn" onclick="addItem(this)">＋ 新增${label}</button></div>`}
@@ -149,14 +151,59 @@ async function copyQuote(){await copyText($("quoteOutput").textContent);toast("�
 function clearQuote(){if(!confirm("確定要清除目前所有報價資料嗎？"))return;["customerName","quoteAddress","orderSuffix"].forEach(id=>$(id).value="");$("exchangeRate").value=40;$("websiteOrders").innerHTML="";$("deliveryOrders").innerHTML="";$("quoteOutput").style.display="none";$("copyQuoteBtn").style.display="none";$("orderDate").value=today();updatePrefix();currentMode==="website"?addWebsiteOrder():addDeliveryOrder()}
 
 function diUnit(text,suffix){const x=String(text||"").trim();return x&&/^\d+$/.test(x)?`${x}${suffix}`:x}
+const DI_OPTIONS={
+  hotel:[
+    ["front","放一樓櫃檯"],
+    ["door","放房門口"],
+    ["table","飯店外送餐點放置桌"],
+    ["doorFront","放房門口；無法上樓請放一樓櫃檯"],
+    ["custom","自行輸入"]
+  ],
+  airbnb:[
+    ["homeDoor","放住宿門口"],
+    ["commonDoor","放大樓公共入口"],
+    ["firstEntrance","放一樓出入口"],
+    ["homeCommon","放住宿門口；無法上樓請放大樓公共入口"],
+    ["custom","自行輸入"]
+  ]
+};
+function updateDIOptions(keepSelection=false){
+  const select=$("diDropoff");
+  const previous=keepSelection?select.value:"";
+  const options=DI_OPTIONS[val("diStayType")]||DI_OPTIONS.hotel;
+  select.innerHTML=options.map(([value,label])=>`<option value="${value}">${label}</option>`).join("");
+  if(previous&&options.some(([value])=>value===previous))select.value=previous;
+  toggleDICustom();
+}
 function toggleDICustom(){$("diCustomWrap").classList.toggle("show",val("diDropoff")==="custom")}
 function bringQuoteAddress(){const a=val("quoteAddress");if(!a)return toast("報價地址欄位目前是空白");$("diAddress").value=a;toast("已帶入地址")}
-function diRequest(){const room=diUnit(val("diRoom"),"호"),floor=diUnit(val("diFloor"),"층"),target=room?(floor?`${room}(${floor})`:room):"객실",type=val("diDropoff");let text="";if(type==="front")text="호텔 1층 프런트에 맡겨 주세요.";if(type==="door")text=`${target} 문 앞에 놓아 주세요.`;if(type==="table")text="호텔 배달 음식 놓는 탁자 위에 놓아 주세요.";if(type==="doorFront")text=`${target} 문 앞에 놓아 주세요. 올라오실 수 없으면 호텔 1층 프런트에 맡겨 주세요.`;if(type==="custom")text=val("diCustom");const extra=val("diExtra");if(extra)text+=`${text?" ":""}${extra}`;text+=`${text?" ":""}사진을 꼭 찍어서 보내 주세요. 감사합니다.`;const recipient=val("diRecipient");if(recipient)text+=` (수령자 : ${recipient})`;return text.trim()}
-function generateDeliveryInfo(scroll=false){const address=val("diAddress");if(!address){toast("請先填寫完整韓文地址");return""}const out=`배달 주소：${address}\n\n요청사항：${diRequest()}`;$("diOutput").textContent=out;if(scroll)$("diOutput").scrollIntoView({behavior:"smooth",block:"center"});return out}
+function diRequest(){
+  const room=diUnit(val("diRoom"),"호");
+  const floor=diUnit(val("diFloor"),"층");
+  const target=room?(floor?`${room}(${floor})`:room):"";
+  const type=val("diDropoff");
+  let text="";
+  if(type==="front")text="1층 프런트에 맡겨주세요.";
+  if(type==="door")text=`${target||"객실"} 문 앞에 놓아주세요.`;
+  if(type==="table")text="배달음식 놓는 테이블에 놓아주세요.";
+  if(type==="doorFront")text=`${target||"객실"} 문 앞에 놓아주세요. 못 올라오시면 1층 프런트에 맡겨주세요.`;
+  if(type==="homeDoor")text=target?`${target} 문 앞에 놓아주세요.`:"숙소 현관문 앞에 놓아주세요.";
+  if(type==="commonDoor")text="공동현관 앞에 놓아주세요.";
+  if(type==="firstEntrance")text="1층 출입구 앞에 놓아주세요.";
+  if(type==="homeCommon")text=`${target?`${target} 문 앞`:"숙소 현관문 앞"}에 놓아주세요. 못 올라오시면 공동현관 앞에 놓아주세요.`;
+  if(type==="custom")text=val("diCustom");
+  const extra=val("diExtra");
+  if(extra)text+=`${text?" ":""}${extra}`;
+  text+=`${text?" ":""}사진 부탁드립니다. 감사합니다.`;
+  const recipient=val("diRecipient");
+  if(recipient)text+=` (수령자 : ${recipient})`;
+  return text.trim();
+}
+function generateDeliveryInfo(scroll=false){const address=val("diAddress");if(!address){toast("請先填寫完整韓文地址");return""}const request=diRequest(),out=`배달 주소：${address}\n\n요청사항：${request}`;$("diOutput").textContent=out;$("diCount").textContent=`요청사항：${request.length} 字`;if(scroll)$("diOutput").scrollIntoView({behavior:"smooth",block:"center"});return out}
 async function copyDeliveryInfo(){const out=generateDeliveryInfo(false);if(!out)return;await copyText(out);toast("外送資訊已複製")}
-function clearDeliveryInfo(){if(!confirm("確定要清除目前的外送資訊嗎？"))return;["diAddress","diRecipient","diRoom","diFloor","diCustom","diExtra"].forEach(id=>$(id).value="");$("diDropoff").value="front";toggleDICustom();$("diOutput").textContent="填寫完成後，按下「產生外送資訊」。"}
+function clearDeliveryInfo(){if(!confirm("確定要清除目前的外送資訊嗎？"))return;["diAddress","diRecipient","diRoom","diFloor","diCustom","diExtra"].forEach(id=>$(id).value="");$("diStayType").value="hotel";updateDIOptions();$("diOutput").textContent="填寫完成後，按下「產生外送資訊」。";$("diCount").textContent="요청사항：0 字"}
 
-$("orderDate").value=today();updatePrefix();$("orderDate").addEventListener("change",updatePrefix);document.querySelectorAll('input[name="payment"]').forEach(x=>x.addEventListener("change",updateSummary));
+$("orderDate").value=today();updatePrefix();updateDIOptions();$("orderDate").addEventListener("change",updatePrefix);document.querySelectorAll('input[name="payment"]').forEach(x=>x.addEventListener("change",updateSummary));
 </script>
 </body>
 </html>
