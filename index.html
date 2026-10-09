@@ -1387,6 +1387,12 @@ function addDeliveryOrder() {
       ${itemBlock("餐點")}
 
       <div class="field">
+        <label>外送費（₩，選填）</label>
+        <input type="number" class="shipping" min="0"
+          placeholder="未填則不計外送費" oninput="updateSummary()">
+      </div>
+
+      <div class="field">
         <label>幾人用餐（索取餐具）</label>
 
         <input
@@ -1641,11 +1647,7 @@ function totals() {
         productTotal(card);
 
       const shippingAmount =
-        currentMode === "website"
-          ? Number(
-              card.querySelector(".shipping")?.value
-            ) || 0
-          : 0;
+        Number(card.querySelector(".shipping")?.value) || 0;
 
       const fee =
         currentMode === "website"
@@ -1677,10 +1679,6 @@ function totals() {
   };
 }
 
-/* =====================================================
-   修正版：每筆訂單分別換算、無條件進位，再加總
-===================================================== */
-
 function updateSummary() {
   if (!currentMode) {
     return;
@@ -1699,7 +1697,6 @@ function updateSummary() {
   let total = 0;
 
   if (selectedPayment === "NTD") {
-
     const selector =
       currentMode === "website"
         ? ".website-order"
@@ -1708,16 +1705,11 @@ function updateSummary() {
     document
       .querySelectorAll(selector)
       .forEach(card => {
-
         const productAmount =
           productTotal(card);
 
         const shippingAmount =
-          currentMode === "website"
-            ? Number(
-                card.querySelector(".shipping")?.value
-              ) || 0
-            : 0;
+          Number(card.querySelector(".shipping")?.value) || 0;
 
         const fee =
           currentMode === "website"
@@ -1725,7 +1717,6 @@ function updateSummary() {
             : deliveryFee(productAmount);
 
         if (fee.ntd !== null) {
-
           const converted =
             Math.ceil(
               (
@@ -1734,22 +1725,17 @@ function updateSummary() {
               ) / rate
             );
 
-          const orderSubtotal =
+          total +=
             converted +
             fee.ntd;
-
-          total += orderSubtotal;
         }
-
       });
 
   } else {
-
     total =
       totalsData.product +
       totalsData.shipping +
       totalsData.feeKRW;
-
   }
 
   $("summaryProduct").textContent =
@@ -1872,8 +1858,6 @@ ${address}
   let totalShipping = 0;
   let totalFeeNTD = 0;
   let totalFeeKRW = 0;
-
-  /* 修正：直接累積每筆已進位後的台幣小計 */
   let totalNTD = 0;
 
   const selector =
@@ -1899,11 +1883,7 @@ ${address}
       productTotal(card);
 
     const shippingAmount =
-      currentMode === "website"
-        ? Number(
-            card.querySelector(".shipping").value
-          ) || 0
-        : 0;
+      Number(card.querySelector(".shipping")?.value) || 0;
 
     const fee =
       currentMode === "website"
@@ -1929,8 +1909,9 @@ ${address}
       }金額：₩${money(productAmount)}\n`;
 
     if (shippingAmount > 0) {
-      output +=
-        `🚚 韓國境內運費：₩${money(shippingAmount)}\n`;
+      output += currentMode === "website"
+        ? `🚚 韓國境內運費：₩${money(shippingAmount)}\n`
+        : `🛵 外送費：₩${money(shippingAmount)}\n`;
     }
 
     const dinerCount =
@@ -1955,19 +1936,10 @@ ${address}
     }
 
     if (fee.ntd === null) {
-
       output +=
         "⚠️ 本筆商品金額超過 ₩300,000，需事前確認是否承接。\n";
 
     } else if (selectedPayment === "NTD") {
-
-      /*
-       * 每筆訂單獨立換算：
-       * （商品＋運費）÷ 匯率
-       * → Math.ceil 無條件進位
-       * → 再加該筆服務費
-       */
-
       const converted =
         Math.ceil(
           (
@@ -1976,28 +1948,22 @@ ${address}
           ) / rate
         );
 
-      const orderSubtotalNTD =
-        converted +
-        fee.ntd;
-
       output +=
         `🇹🇼 換算金額：約 NT$${money(converted)}\n`;
 
       output +=
         `🧾 代訂服務費：NT$${money(fee.ntd)}\n`;
 
+      const orderSubtotalNTD =
+        converted + fee.ntd;
+
       output +=
         `💰 本筆小計：NT$${money(orderSubtotalNTD)}\n`;
 
-      /*
-       * 重要：
-       * 最終總額直接加這個已經進位完成的本筆小計。
-       */
       totalNTD +=
         orderSubtotalNTD;
 
     } else {
-
       output +=
         `🧾 代訂服務費：₩${money(fee.krw)}\n`;
 
@@ -2007,7 +1973,6 @@ ${address}
           shippingAmount +
           fee.krw
         )}\n`;
-
     }
 
     output +=
@@ -2022,12 +1987,6 @@ ${address}
     }
 
   });
-
-  /*
-   * 修正版：
-   * 台幣不再把所有韓元重新合計後進位。
-   * 直接使用上面每筆小計的總和。
-   */
 
   const finalTotal =
     selectedPayment === "NTD"
@@ -2057,15 +2016,12 @@ ${PAYMENT_INFO[selectedPayment]}
 `;
 
   if (currentMode === "website") {
-
     output +=
       "📍 不同網站／不同結帳訂單，代訂服務費分別計算。\n\n";
 
   } else if (cards.length >= 2) {
-
     output +=
       "📍 本次為不同店家訂購，各店家將分別計算代訂服務費。\n\n";
-
   }
 
   output +=
@@ -2158,10 +2114,6 @@ function clearQuote() {
     addDeliveryOrder();
   }
 }
-
-/* =====================================================
-   外送資訊小工具
-===================================================== */
 
 function diUnit(text, suffix) {
   const value =
