@@ -674,7 +674,7 @@ label {
           <input
             type="number"
             id="exchangeRate"
-            value="39"
+            value="38"
             min="1"
             inputmode="decimal"
             oninput="updateSummary()"
@@ -1689,7 +1689,7 @@ function updateSummary() {
   const rate =
     Number(
       val("exchangeRate")
-    ) || 39;
+    ) || 38;
 
   const selectedPayment =
     payment();
@@ -1831,7 +1831,7 @@ function generateQuote() {
   const rate =
     Number(
       val("exchangeRate")
-    ) || 39;
+    ) || 38;
 
   const selectedPayment =
     payment();
@@ -2092,7 +2092,7 @@ function clearQuote() {
     $(id).value = "";
   });
 
-  $("exchangeRate").value = 39;
+  $("exchangeRate").value = 38;
 
   $("websiteOrders").innerHTML = "";
   $("deliveryOrders").innerHTML = "";
@@ -2420,3 +2420,4 @@ document
 
 </body>
 </html>
+0 秒
