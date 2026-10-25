@@ -786,7 +786,7 @@ label {
 
         <br>
 
-        ※ 商品費用及韓國境內運費另計<br>
+        ※ 商品費用及韓國境內運費另計；服務費級距依商品與運費合計判斷<br>
         ※ 不同網站／不同結帳訂單分開計算<br>
         ※ 單筆訂單最高 ₩300,000<br>
         ※ 不包含集運運回服務，請自行提供韓國集運地址
@@ -1651,8 +1651,8 @@ function totals() {
 
       const fee =
         currentMode === "website"
-          ? websiteFee(productAmount)
-          : deliveryFee(productAmount);
+          ? websiteFee(productAmount + shippingAmount)
+          : deliveryFee(productAmount + shippingAmount);
 
       product += productAmount;
       shipping += shippingAmount;
@@ -1666,7 +1666,7 @@ function totals() {
         .querySelector(".fee-preview")
         .textContent =
         fee.ntd === null
-          ? `⚠️ 商品金額 ₩${money(productAmount)} 已超過單筆上限`
+          ? `⚠️ 含運總額 ₩${money(productAmount + shippingAmount)} 已超過單筆上限`
           : `🧾 本筆服務費：NT$${money(fee.ntd)} ／ ₩${money(fee.krw)}`;
 
     });
@@ -1713,8 +1713,8 @@ function updateSummary() {
 
         const fee =
           currentMode === "website"
-            ? websiteFee(productAmount)
-            : deliveryFee(productAmount);
+            ? websiteFee(productAmount + shippingAmount)
+            : deliveryFee(productAmount + shippingAmount);
 
         if (fee.ntd !== null) {
           const converted =
@@ -1887,8 +1887,8 @@ ${address}
 
     const fee =
       currentMode === "website"
-        ? websiteFee(productAmount)
-        : deliveryFee(productAmount);
+        ? websiteFee(productAmount + shippingAmount)
+        : deliveryFee(productAmount + shippingAmount);
 
     const emoji =
       currentMode === "website"
@@ -1937,7 +1937,7 @@ ${address}
 
     if (fee.ntd === null) {
       output +=
-        "⚠️ 本筆商品金額超過 ₩300,000，需事前確認是否承接。\n";
+        "⚠️ 本筆商品與運費合計超過 ₩300,000，需事前確認是否承接。\n";
 
     } else if (selectedPayment === "NTD") {
       const converted =
@@ -2420,4 +2420,3 @@ document
 
 </body>
 </html>
-0 秒
