@@ -922,21 +922,24 @@ label {
 
           <details id="addressAssistant" style="border:1px solid #ddd;border-radius:12px;padding:16px;margin-bottom:20px" open>
             <summary style="cursor:pointer;font-weight:bold">🔎 多語地址 → AI 整理 → NAVER 核對</summary>
-            <p style="font-size:13px;line-height:1.8;color:#666">支援客人提供的繁中、簡中與英文內容。先複製查詢指令到 ChatGPT，將結果貼回，再到 NAVER 確認大樓位置。這個版本不會自動呼叫 AI 或讀取地圖結果。</p>
+            <p style="font-size:13px;line-height:1.8;color:#666">貼地址 → AI 查詢 → NAVER 核對。支援繁中、簡中、英文；AI 結果貼回後會自動整理。仍需在 ChatGPT 貼上送出，最後自行核對位置。</p>
             <label for="aaOriginal">① 客人提供的原始地址</label>
             <textarea id="aaOriginal" placeholder="貼上原始地址、大樓或飯店名稱；不需要填客人姓名、電話或門鎖密碼"></textarea>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0"><button class="secondary" type="button" onclick="aaBringQuote()">帶入報價地址</button><button class="secondary" type="button" onclick="aaCopyPrompt()">複製 AI 查詢指令</button><a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" style="padding:12px">開啟 ChatGPT ↗</a></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0"><button class="secondary" type="button" onclick="aaBringQuote()">帶入報價地址</button><button class="primary" type="button" onclick="aaCopyPrompt()">複製指令並開啟 AI ↗</button></div>
+            <details><summary>查看查詢指令／手動複製</summary>
             <textarea id="aaPrompt" readonly placeholder="點「複製 AI 查詢指令」後，這裡也會顯示完整指令，方便手動複製" aria-label="AI 查詢指令"></textarea>
-            <label for="aaResponse">② 貼回 AI 的 JSON 結果</label>
-            <textarea id="aaResponse" placeholder="把 AI 回覆的 JSON 貼在這裡"></textarea>
-            <button type="button" class="secondary" onclick="aaParseResponse()">整理到下方欄位</button>
+            </details>
+            <label for="aaResponse">② 貼回 AI 的完整文字結果</label>
+            <textarea id="aaResponse" placeholder="把 AI 回覆直接貼上，不用整理格式"></textarea>
+            <button type="button" class="primary" style="margin:12px 0" onclick="aaParseAndOpen()">③ 開啟 NAVER 核對 ↗</button>
             <p id="aaSources" style="white-space:pre-wrap;font-size:13px;color:#666" role="status"></p>
-            <label for="aaBase">③ 韓文基本地址（不含房號，可自行修正）</label><input id="aaBase" placeholder="韓文道路名地址或地番地址">
+            <details><summary>查看／手動調整整理結果</summary>
+            <label for="aaBase">韓文基本地址（不含房號）</label><input id="aaBase" placeholder="韓文道路名地址或地番地址">
             <label for="aaBuilding">大樓／飯店名稱（韓文，選填）</label><input id="aaBuilding" placeholder="只放 AI 查到的韓文正式名稱">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><label for="aaRoom">房號（選填）</label><input id="aaRoom" placeholder="例如 1203"></div><div><label for="aaFloor">樓層（明確提供才填）</label><input id="aaFloor" placeholder="不可從房號推測"></div></div>
-            <button type="button" class="secondary" style="margin:12px 0" onclick="aaOpenNaver()">④ 開啟 NAVER MAP 核對 ↗</button>
+            </details>
             <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px"><input id="aaVerified" type="checkbox" style="width:auto;flex:none;margin-top:4px" disabled><span>我已在 NAVER 核對地址、門牌與大樓位置，並與客人資料相符（房號另依客人／住宿方資料確認）。</span></label>
-            <button type="button" class="secondary" style="margin-top:12px" onclick="aaApply()">⑤ 帶入已核對的外送地址</button>
+            <button type="button" class="secondary" style="margin-top:12px" onclick="aaApply()">確認並帶入外送地址</button>
             <p id="aaStatus" style="font-size:13px;line-height:1.7;color:#666" role="status"></p>
           </details>
           <label>完整韓文地址</label>

@@ -1,5 +1,7 @@
 const assert=require('node:assert/strict');
-const {deliveryTextLength,compactDriverRequest}=require('../delivery-output.js');
+const {deliveryTextLength,compactDriverRequest,cutleryRequest}=require('../delivery-output.js');
+for(let n=1;n<=10;n++){assert.equal(cutleryRequest(String(n)),`수저 ${n}세트 챙겨주세요. 감사합니다.`);assert(deliveryTextLength(cutleryRequest(String(n)))<=50);}
+assert.equal(cutleryRequest(''),'');assert.equal(cutleryRequest('11'),'');assert(cutleryRequest('none').includes('필요 없어요'));
 assert.equal(deliveryTextLength('가 나.'),4);
 assert.equal(deliveryTextLength('😀'),1);
 for(const type of ['front','door','table','doorFront','homeDoor','commonDoor','firstEntrance','homeCommon']){
