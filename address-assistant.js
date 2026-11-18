@@ -30,22 +30,30 @@ function parseAddressResponse(raw) {
   if(data.sources!==undefined&&(!Array.isArray(data.sources)||data.sources.some(s=>typeof s!=='string')))throw Error('sources 須為網址陣列');
   return {address:(data.koreanAddress||data.jibunAddress||'').trim(),building:(data.buildingName||'').trim(),room:(data.room||'').trim(),floor:(data.floor||'').trim(),notes:data.notes||'',sources:data.sources||[]};
 }
-function naverAddressUrl(address,building) { return 'https://map.naver.com/p/search/'+encodeURIComponent([address.trim(),building.trim()].filter(Boolean).join(' ')); }
+function naverAddressUrl(address,building='') { return 'https://map.naver.com/p/search/'+encodeURIComponent([address.trim(),building.trim()].filter(Boolean).join(' ')); }
 if(typeof module!=='undefined')module.exports={buildAddressPrompt,parseAddressResponse,naverAddressUrl};
 if(typeof document!=='undefined'){
   let openedQuery='';
   const aa=id=>document.getElementById(id),value=id=>aa(id).value.trim(),status=text=>aa('aaStatus').textContent=text;
-  function invalidate(){openedQuery='';aa('aaVerified').checked=false;aa('aaVerified').disabled=true;}
-  function resetAssistant(){invalidate();['aaOriginal','aaPrompt','aaResponse','aaBase','aaBuilding','aaRoom','aaFloor'].forEach(id=>aa(id).value='');aa('aaSources').textContent='';status('');}
+  function invalidate(){openedQuery='';}
+  function resetAssistant(){invalidate();['aaPrompt','aaResponse','aaBase','aaBuilding','aaRoom','aaFloor'].forEach(id=>aa(id).value='');aa('aaSources').textContent='';status('');}
   ['aaBase','aaBuilding','aaRoom','aaFloor'].forEach(id=>aa(id).addEventListener('input',()=>{invalidate();status('資料已修改，請重新開啟 NAVER 並核對。');}));
-  aa('aaOriginal').addEventListener('input',()=>{invalidate();['aaPrompt','aaResponse','aaBase','aaBuilding','aaRoom','aaFloor'].forEach(id=>aa(id).value='');aa('aaSources').textContent='';status('原始地址已修改，請重新查詢，避免沿用上一位客人的結果。');});
-  window.aaBringQuote=()=>{const address=document.getElementById('quoteAddress').value.trim();if(!address)return status('報價地址是空白。');resetAssistant();aa('aaOriginal').value=address;status('已帶入原始地址，下一步複製 AI 查詢指令。');};
-  window.aaCopyPrompt=async()=>{const original=value('aaOriginal');if(!original)return status('請先貼上客人的地址。');aa('aaPrompt').value=buildAddressPrompt(original);window.open('https://chatgpt.com/','_blank','noopener,noreferrer');try{await navigator.clipboard.writeText(aa('aaPrompt').value);status('指令已複製。切到 ChatGPT 貼上送出，將回覆貼回這裡即可。');}catch{aa('aaPrompt').closest('details').open=true;aa('aaPrompt').focus();aa('aaPrompt').select();status('無法自動複製，請手動複製展開的查詢指令，再到 ChatGPT 貼上。');}};
+  aa('diAddress').addEventListener('input', resetAssistant);
+  function openNaver(url) {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+  window.aaSearchOriginal = () => {
+    const address = value('diAddress');
+    if (!address) return status('請先輸入地址或飯店名稱。');
+    openNaver(naverAddressUrl(address));
+    status('找到正確位置後，請將韓文地址貼回外送地址欄。');
+  };
+  window.aaCopyPrompt=async()=>{const original=value('diAddress');if(!original)return status('請先貼上客人的地址。');aa('aaPrompt').value=buildAddressPrompt(original);window.open('https://chatgpt.com/','_blank','noopener,noreferrer');try{await navigator.clipboard.writeText(aa('aaPrompt').value);status('指令已複製。切到 ChatGPT 貼上送出，將回覆貼回這裡即可。');}catch{aa('aaPrompt').closest('details').open=true;aa('aaPrompt').focus();aa('aaPrompt').select();status('無法自動複製，請手動複製展開的查詢指令，再到 ChatGPT 貼上。');}};
   window.aaParseResponse=()=>{try{const result=parseAddressResponse(value('aaResponse'));invalidate();aa('aaBase').value=result.address;aa('aaBuilding').value=result.building;aa('aaRoom').value=result.room;aa('aaFloor').value=result.floor;aa('aaSources').textContent=['AI 查詢說明（尚未核對）：'+result.notes,...result.sources].join('\n');status(result.address?'已整理候選，請閱讀說明後到 NAVER 核對。':'沒有唯一可確認的地址，請依 AI 說明向客人補資料後重新查詢。');return !!result.address;}catch{invalidate();status('請貼上 AI 回覆的完整文字，或展開「手動調整」填入韓文地址。');return false;}};
   aa('aaResponse').addEventListener('input',()=>{invalidate();['aaBase','aaBuilding','aaRoom','aaFloor'].forEach(id=>aa(id).value='');aa('aaSources').textContent='';});
   aa('aaResponse').addEventListener('change',()=>{if(value('aaResponse'))window.aaParseResponse();});
   window.aaParseAndOpen=()=>{if(!value('aaBase')&&!window.aaParseResponse())return;window.aaOpenNaver();};
-  window.aaOpenNaver=()=>{const base=value('aaBase'),building=value('aaBuilding');if(!base)return status('請先查詢或填入韓文基本地址。');if(!/[가-힣]/.test(base))return status('基本地址未包含韓文，請先查詢韓文地址。');const url=naverAddressUrl(base,building);const link=document.createElement('a');link.href=url;link.target='_blank';link.rel='noopener noreferrer';document.body.append(link);link.click();link.remove();openedQuery=url;aa('aaVerified').disabled=false;aa('aaVerified').checked=false;status('已開啟搜尋。請自行確認結果，回來勾選確認；工具無法讀取 NAVER 搜尋結果。');};
-  window.aaApply=()=>{const base=value('aaBase'),building=value('aaBuilding');if(!base||openedQuery!==naverAddressUrl(base,building)||!aa('aaVerified').checked)return status('請先開啟 NAVER 核對目前地址，再勾選確認。');if(document.getElementById('diAddress').value.trim()&&!confirm('要用這個已核對地址取代目前的外送地址與房號／樓層嗎？'))return;document.getElementById('diAddress').value=[base,building].filter(Boolean).join(' ');document.getElementById('diRoom').value=value('aaRoom');document.getElementById('diFloor').value=value('aaFloor');if(window.resetDeliveryOutputs)window.resetDeliveryOutputs();else document.getElementById('diOutput').textContent='地址已更新，請重新產生外送資訊。';document.getElementById('diCount').textContent='요청사항：0 字';status('已帶入基本地址，房號與樓層分別放入對應欄位；請確認放置方式後重新產生資訊。');};
+  window.aaOpenNaver=()=>{const base=value('aaBase'),building=value('aaBuilding');if(!base)return status('請先查詢或填入韓文基本地址。');if(!/[가-힣]/.test(base))return status('基本地址未包含韓文，請先查詢韓文地址。');const url=naverAddressUrl(base,building);openNaver(url);openedQuery=url;status('請在 NAVER 核對位置，再回來按「確認使用這個地址」。');};
+  window.aaApply=()=>{const base=value('aaBase'),building=value('aaBuilding');if(!base||openedQuery!==naverAddressUrl(base,building))return status('請先開啟 NAVER 核對目前地址。');document.getElementById('diAddress').value=[base,building].filter(Boolean).join(' ');if(value('aaRoom'))aa('diRoom').value=value('aaRoom');if(value('aaFloor'))aa('diFloor').value=value('aaFloor');if(window.resetDeliveryOutputs)window.resetDeliveryOutputs();else document.getElementById('diOutput').textContent='地址已更新，請重新產生外送資訊。';document.getElementById('diCount').textContent='요청사항：0 字';resetAssistant();status('已帶入韓文地址。請確認房號、樓層與放置方式後產生資訊。');};
   window.aaReset=resetAssistant;
 }

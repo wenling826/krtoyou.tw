@@ -19,7 +19,7 @@ if(typeof document!=='undefined'){
   for(const id of ['diDriverText','diStoreText'])get(id).addEventListener('input',countNotes);
   window.resetDeliveryOutputs=()=>{get('diFinalAddress').value='';get('diDriverText').value='';get('diCount').textContent='地址已修改，請重新產生外送資訊。';countNotes();};
   window.generateDeliveryInfo=(scroll=false)=>{
-    const address=get('diAddress').value.trim();if(!address){toast('請先填寫完整韓文地址');return '';}
+    const address=get('diAddress').value.trim();if(!/[가-힣]/.test(address)){toast('請先填寫完整韓文地址');return '';}
     const room=diUnit(get('diRoom').value.trim(),'호'),floor=diUnit(get('diFloor').value.trim(),'층');
     const target=[room,floor].filter(Boolean).join(' ');
     get('diFinalAddress').value=[address,target].filter(Boolean).join(' ');
@@ -35,6 +35,5 @@ if(typeof document!=='undefined'){
   for(const id of ['diAddress','diRoom','diFloor','diRecipient','diCustom','diExtra','diDropoff','diStayType'])get(id).addEventListener('input',()=>resetDeliveryOutputs());
   get('diCount').textContent='填寫完成後，按下「產生外送資訊」。';
   const notice=get('diExtra').closest('.grid').querySelector('.notice');notice.textContent='地址、外送員需求與店家需求分開複製。外送員預設加入拍照要求；超過 50 字會要求精簡，不會直接截斷。店家需求請在產生結果區自行填寫韓文。';
-  const oldBring=window.bringQuoteAddress;window.bringQuoteAddress=()=>{oldBring();resetDeliveryOutputs();};
   countNotes();
 }
